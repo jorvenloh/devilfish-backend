@@ -11,6 +11,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UserSeeder::class);
+        $this->call(RolesSeeder::class);
+        $this->call(UsersSeeder::class);
+       
+        if (config('app.env') == 'local') {
+    	    $this->call([
+    	        PassportSeeder::class,
+    	    ]);
+    	}
+
     }
 }
