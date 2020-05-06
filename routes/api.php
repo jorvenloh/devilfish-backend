@@ -13,18 +13,24 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::resource('users', 'Api\Admin\TransactionController');
 
-Route::group(['middleware' => 'api', 'as' => 'api.'], function () {
+Route::group(['middleware' => 'api'], function () {
     //Auth
-    Route::post('login', 'Api\LoginController@login');
-    Route::post('register', 'Api\RegisterController@register');
+    Route::post('login', 'Api\Auth\AuthController@login');
+    Route::post('register', 'Api\Auth\AuthController@register');
 
-    Route::resource('users', 'Api\Admin\TransactionController');
 
 });
 
 Route::group(['middleware' => 'auth:api'], function(){
-	
+
+    Route::post('logout', 'Api\Auth\AuthController@logout');
+
+    Route::group(['prefix' => 'admin'], function () {
+        Route::resource('users', 'Api\Admin\UserController');
+        Route::resource('roles', 'Api\Admin\RoleController');
+        Route::resource('privileges', 'Api\Admin\PrivilegeController');
+    });
 
 });
+
