@@ -7,10 +7,13 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Notifications\Auth\ResetPasswordNotification;
+use Log;
+use App\Traits\UserTrait;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, Notifiable, SoftDeletes;
+    use HasApiTokens, Notifiable, SoftDeletes, UserTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -18,10 +21,10 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'username', 
-        'email', 
-        'email_verified_at', 
-        'password', 
+        'username',
+        'email',
+        'email_verified_at',
+        'password',
     ];
 
     /**
@@ -30,7 +33,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 
+        'password',
         'remember_token',
     ];
 
@@ -46,7 +49,7 @@ class User extends Authenticatable
     protected $dates = [
         'created_at',
         'updated_at',
-        'deleted_at'        
+        'deleted_at'
     ];
 
     public function profile()
@@ -64,4 +67,5 @@ class User extends Authenticatable
     {
         return $this->morphToMany('App\Privilege', 'privilegeable');
     }
+
 }

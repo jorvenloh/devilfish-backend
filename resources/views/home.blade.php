@@ -13,7 +13,7 @@
                         </div>
                     @endif
 
-                    Welcome, {{ Auth::user()->name }}
+                    Welcome, {{ Auth::user()->username ?? Auth::user()->email }}
                 </div>
             </div>
 
@@ -22,7 +22,7 @@
             <passport-authorized-clients></passport-authorized-clients>
 
             <passport-personal-access-tokens class="my-3"></passport-personal-access-tokens>
-               
+
         </div>
     </div>
 </div>

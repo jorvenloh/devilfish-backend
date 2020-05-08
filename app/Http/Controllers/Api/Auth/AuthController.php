@@ -20,18 +20,24 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request)
     {
+
         //only paid user need to assign user role
+        $user = User::create(['email' => $request->email, 'password' => bcrypt($request->password)]);
+
+        if (!$user)
+            return response()->json(['success' => false, 'message' => 'Failed to register'], 500);
+
+        //publish created new user event
+        $user->sendEmailVerificationNotificationForApi();
+
 
         //newsletter_check
-        if($request->newsletter_check){
+        if ($request->newsletter_check) {
             //create subscriber
         }
 
-        //publish created new user event
-
-        $user = User::create(['email' => $request->email, 'password' => bcrypt($request->password)]);
-
-        return response()->json(['success' => true, 'message' => 'Please proceed to verify your email'], 200);
+        //$user->sendEmailVerificationNotification();
+        return response()->json(['success' => true, 'message' => 'Please proceed to verify your email', 'registered_email' => $user->email], 201);
     }
 
     /**
@@ -41,35 +47,34 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
+
         $credentials = $request->only('email', 'password');
 
-        // Force email verification
-        // if(User::find('email', $request->email->trim())->email_verified_at == null){
-        //     response()->json([
-        //         'error' => 'Please verify your email before login'
-        //     ], 403);
-        // }
+        //attempt user login
+        if (!Auth::attempt($credentials, $request->remember_me))
+            return response()->json([
+                'errors' => ['email' => 'Wrong email or password', 'password' => 'Wrong email or password']
+            ], 403);
 
-        if (Auth::attempt($credentials, $request->remember_me)) {
-            $accessToken = Auth::user()->createToken('user')->accessToken;
-            if($accessToken){
-                return response()->json([
-                    'success' => true,
-                    'access_token' => $accessToken,
-                    'user' => ['email' => Auth::user()->email, 'username' => Auth::user()->username],
-                    'redirect_url' => '/home'
-                ], 200);
-            }
-            else{
-                return response()->json([
-                    'errors' => ['message' => 'Failed to generate access token']
-                ], 403);
-            }
-        }
+        if (!Auth::user()->hasVerifiedEmail())
+            return response()->json([
+                'errors' => ['email' => 'Email registered but not verified', 'email_not_verified' => true],
+                'registered_email' => Auth::user()->email,
+            ], 403);
+
+        //generate user access token
+        $accessToken = Auth::user()->createToken('user')->accessToken;
+        if (!$accessToken)
+            return response()->json([
+                'errors' => ['message' => 'Failed to generate access token']
+            ], 403);
 
         return response()->json([
-            'errors' => ['message' => 'Wrong email or password']
-        ], 403);
+            'success' => true,
+            'access_token' => $accessToken,
+            'user' => ['email' => Auth::user()->email, 'username' => Auth::user()->username],
+            //'redirect_url' => '/'
+        ], 200);
     }
 
     /**
@@ -79,17 +84,17 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        if($request->logout_all_device){
+        if ($request->logout_all_device) {
             //Auth::logoutOtherDevices($request->password);
         }
 
         $accessToken = Auth::user()->token();
-        $token= $request->user()->tokens->find($accessToken);
+        $token = $request->user()->tokens->find($accessToken);
         $token->revoke();
 
         return response()->json(['success' => true, 'message' => 'You have logged out'], 200);
 
         Auth::logout();
-
     }
+
 }
