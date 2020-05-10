@@ -6,22 +6,23 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Log;
 
 class VerifyEmail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $id, $hash;
+    protected $user, $action_url;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($id, $hash)
+    public function __construct($user, $action_url)
     {
-        $this->id = $id;
-        $this->hash = $hash;
+        $this->user = $user;
+        $this->action_url = $action_url;
     }
 
     /**
@@ -31,6 +32,6 @@ class VerifyEmail extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.verifyEmail')->with(['id' => $this->id, 'hash' => $this->hash]);
+        return $this->view('emails.verifyEmail')->with(['user' => $this->user, 'action_url' => $this->action_url]);
     }
 }

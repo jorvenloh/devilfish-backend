@@ -3,16 +3,11 @@
 namespace App\Notifications\Auth;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\URL;
-use Log;
 use App\Mail\VerifyEmail;
-use Illuminate\Support\Facades\Mail;
 
 class VerifyEmailNotification extends Notification
 {
@@ -50,7 +45,7 @@ class VerifyEmailNotification extends Notification
     {
         $verificationUrl = $this->verificationUrl($notifiable);
 
-        return (new VerifyEmail($notifiable->getKey(), sha1($notifiable->getEmailForVerification())))->to($notifiable->email);
+        return (new VerifyEmail($notifiable, $verificationUrl))->to($notifiable->email);
     }
 
     /**
@@ -61,14 +56,10 @@ class VerifyEmailNotification extends Notification
      */
     protected function verificationUrl($notifiable)
     {
-        return URL::temporarySignedRoute(
-            'api.verification.verify',
-            Carbon::now()->addMinutes(Config::get('auth.verification.expire', 60)),
-            [
-                'id' => $notifiable->getKey(),
-                'hash' => sha1($notifiable->getEmailForVerification()),
-            ]
-        );
+        $key = $notifiable->getKey();
+        $hash = sha1($notifiable->getEmailForVerification());
+
+        return config('frontend.EMAIL_VERIFICATION')."/{$key}/{$hash}";
     }
 
     /**

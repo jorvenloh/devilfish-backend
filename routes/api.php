@@ -24,7 +24,7 @@ Route::group(['middleware' => 'api', 'as' => 'api.'], function () {
     Route::group(['prefix' => 'email', 'as' => 'verification.'], function () {
         Route::post('resend', 'Api\Auth\VerificationController@resend')->middleware('throttle:60,1')->name('resend');
         Route::get('verify', 'Api\Auth\VerificationController@show')->name('notice');
-        Route::get('verify/{id}/{hash}', 'Api\Auth\VerificationController@verify')->middleware('throttle:60,1', 'signed')->name('verify');
+        Route::get('verify/{id}/{hash}', 'Api\Auth\VerificationController@verify')->middleware('throttle:60,1')->name('verify');
     });
 
 });

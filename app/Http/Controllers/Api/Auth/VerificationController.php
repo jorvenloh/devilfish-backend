@@ -42,10 +42,10 @@ class VerificationController extends Controller
         $user = User::find($request->id);
 
         if (!$user)
-            return response()->json(['success' => false, 'is_user_verified' => false, 'message' => 'User not found'], 500);
+            $this->sendNotVerifiedResponse();
 
         if (!hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification())))
-            return response()->json(['errors' => ['message' => 'Something is wrong']], 500);
+            $this->sendNotVerifiedResponse();
 
         if ($user->hasVerifiedEmail())
             return $this->sendVerifiedResponse();
@@ -88,6 +88,6 @@ class VerificationController extends Controller
 
     protected function sendNotVerifiedResponse()
     {
-        return response()->json(['success' => true, 'is_user_verified' => false, 'message' => 'Email is not verified'], 200);
+        return response()->json(['success' => false, 'is_user_verified' => false, 'message' => 'Email is not verified'], 500);
     }
 }
