@@ -21,6 +21,7 @@ Route::group(['middleware' => 'api', 'as' => 'api.'], function () {
     Route::post('forgot-password', 'Api\Auth\ForgotPasswordController@sendResetLinkEmail')->name('forgot-password');
     Route::post('reset-password', 'Api\Auth\ResetPasswordController@reset')->name('reset-password');
 
+    //Email verification
     Route::group(['prefix' => 'email', 'as' => 'verification.'], function () {
         Route::post('resend', 'Api\Auth\VerificationController@resend')->middleware('throttle:60,1')->name('resend');
         Route::get('verify', 'Api\Auth\VerificationController@show')->name('notice');
@@ -31,7 +32,13 @@ Route::group(['middleware' => 'api', 'as' => 'api.'], function () {
 
 Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function(){
 
+    //Auth
+    Route::get('/validate-token', function () {
+        return ['data' => ['is_token_valid'=> true, 'message' => 'Token is valid']];
+    })->middleware('auth:api');
     Route::post('logout', 'Api\Auth\AuthController@logout')->name('logout');
+
+    //Admin
     Route::group(['middleware' => 'verified', 'prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::resource('users', 'Api\Admin\UserController');
         Route::resource('roles', 'Api\Admin\RoleController');
