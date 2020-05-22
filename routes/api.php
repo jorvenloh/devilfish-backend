@@ -37,6 +37,7 @@ Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function(){
         return ['data' => ['is_token_valid'=> true, 'message' => 'Token is valid']];
     })->middleware('auth:api');
     Route::post('logout', 'Api\Auth\AuthController@logout')->name('logout');
+    Route::get('me', 'Api\Auth\AuthController@getMe')->name('me');
 
     //Admin
     Route::group(['middleware' => 'verified', 'prefix' => 'admin', 'as' => 'admin.'], function () {

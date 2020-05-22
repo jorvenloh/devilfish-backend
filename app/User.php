@@ -7,8 +7,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Notifications\Auth\ResetPasswordNotification;
-use Log;
 use App\Traits\UserTrait;
 
 class User extends Authenticatable implements MustVerifyEmail

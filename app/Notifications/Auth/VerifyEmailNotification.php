@@ -59,7 +59,7 @@ class VerifyEmailNotification extends Notification
         $key = $notifiable->getKey();
         $hash = sha1($notifiable->getEmailForVerification());
 
-        return config('frontend.EMAIL_VERIFICATION')."/{$key}/{$hash}";
+        return config('frontend.EMAIL_VERIFICATION')."?key={$key}&hash={$hash}";
     }
 
     /**

@@ -47,19 +47,19 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
+        Log::info($request->all());
 
         $credentials = $request->only('email', 'password');
 
         //attempt user login
-        if (!Auth::attempt($credentials, $request->remember_me))
+        if (!Auth::attempt($credentials))
             return response()->json([
                 'errors' => ['email' => 'Wrong email or password', 'password' => 'Wrong email or password']
             ], 403);
 
         if (!Auth::user()->hasVerifiedEmail())
             return response()->json([
-                'errors' => ['email' => 'Email registered but not verified', 'email_not_verified' => true],
-                'registered_email' => Auth::user()->email,
+                'errors' => ['email' => 'Email registered but not verified', 'email_not_verified' => true, 'registered_email' => Auth::user()->email],
             ], 403);
 
         //generate user access token
@@ -72,7 +72,6 @@ class AuthController extends Controller
         return response()->json([
             'success' => true,
             'access_token' => $accessToken,
-            'user' => ['email' => Auth::user()->email, 'username' => Auth::user()->username],
             //'redirect_url' => '/'
         ], 200);
     }
@@ -84,6 +83,8 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        Log::info(['logout', $request]);
+
         if ($request->logout_all_device) {
             //Auth::logoutOtherDevices($request->password);
         }
@@ -97,4 +98,16 @@ class AuthController extends Controller
         Auth::logout();
     }
 
+    /**
+     * perform API logout.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getMe(Request $request)
+    {
+        return response()->json([
+            'email' => Auth::user()->email,
+            'username' => Auth::user()->username
+        ], 200);
+    }
 }

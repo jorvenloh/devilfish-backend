@@ -8,14 +8,31 @@ use App\Notifications\Auth\VerifyEmailNotification;
 
 trait UserTrait {
 
-    public function sendPasswordResetNotification($token)
+    public function sendPasswordResetNotificationForApi($token)
     {
-        return $this->notify(new ResetPasswordNotification($token));
+        try {
+            $this->notify(new ResetPasswordNotification($token));
+
+        } catch (\Throwable $e) {
+            report($e);
+            return false;
+        }
+
+        return true;
+
     }
 
     public function sendEmailVerificationNotificationForApi()
     {
-        return $this->notify(new VerifyEmailNotification());
+        try {
+            $this->notify(new VerifyEmailNotification());
+
+        } catch (\Throwable $e) {
+            report($e);
+            return false;
+        }
+
+        return true;
     }
 
 }
