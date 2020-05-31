@@ -1,29 +1,36 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">Dashboard</div>
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+@section('title', config('app.name')." | Dashboard")
 
-                    Welcome, {{ Auth::user()->username ?? Auth::user()->email }}
-                </div>
+@section('breadcrumb')
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <h1>Dashboard</h1>
             </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+@endsection
 
-            <passport-clients class="my-3"></passport-clients>
+@section('content')
 
-            <passport-authorized-clients></passport-authorized-clients>
+<div class="row justify-content-center">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">Dashboard</div>
+            <div class="card-body">
+                @if (session('status'))
+                <div class="alert alert-success" role="alert">
+                    {{ session('status') }}
+                </div>
+                @endif
 
-            <passport-personal-access-tokens class="my-3"></passport-personal-access-tokens>
-
+                Welcome, {{ Auth::user()->username ?? Auth::user()->email }}
+            </div>
         </div>
     </div>
 </div>
+
 @endsection

@@ -3,21 +3,39 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes(['verify' => true]);
 
-Route::get('/home', 'HomeController@index')->name('home');
+//Guest
+Route::middleware('guest')->group(function () {
+    Route::get('/', function () {
+        return view('welcome');
+    })->name('landing');
+});
+
+//Auth
+Route::group(['middleware' => 'auth'], function(){
+
+    //AD/SA
+    Route::group(['prefix' => 'admin', 'middleware' => ['hasRole:SA;AD'], 'as' => 'admin.'], function(){
+        Route::get('/home', 'Admin\HomeController@index')->name('home');
+    });
+
+    //Sole SA
+    Route::group(['prefix' => 'superadmin', 'middleware' => ['hasRole:SA'], 'as' => 'superadmin.'], function(){
+
+        Route::group(['prefix' => 'system', 'as' => 'system.'], function(){
+            Route::resource('/privileges', 'Superadmin\System\PrivilegeController', ['only' => ['index', 'show']]);
+            Route::get('/passport', function () {
+                return view('superadmin.system.passport');
+            })->name('passport');
+            Route::get('/setting', function () {
+                return view('superadmin.system.setting');
+            })->name('setting');
+        });
+
+    });
+
+});
+
+
+

@@ -8,6 +8,13 @@ use App\Notifications\Auth\VerifyEmailNotification;
 
 trait UserTrait {
 
+    public function hasRoles($role_arr)
+    {
+        return $this->roles()
+            ->whereIn('code', $role_arr)
+            ->exists();
+    }
+
     public function sendPasswordResetNotificationForApi($token)
     {
         try {

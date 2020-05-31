@@ -8,10 +8,11 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\UserTrait;
+use App\Filters\UserFilter;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, Notifiable, SoftDeletes, UserTrait;
+    use HasApiTokens, Notifiable, SoftDeletes, UserTrait, UserFilter;
 
     /**
      * The attributes that are mass assignable.

@@ -1,5 +1,14 @@
-window._ = require('lodash');
+import globalMixin from './mixins/globalMixin';
+import swalPlugin from './plugins/VueSweetAlert2';
+import SweetAlert from "@/mixins/sweetalertMixin";
 
+window._ = require('lodash');
+window.Vue = require('vue');
+window.qs = require('qs');
+
+Vue.mixin(globalMixin);
+Vue.mixin(SweetAlert);
+Vue.use(swalPlugin);
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
  * for JavaScript based Bootstrap features such as modals and tabs. This
@@ -11,6 +20,8 @@ try {
     window.$ = window.jQuery = require('jquery');
 
     require('bootstrap');
+    require('admin-lte');
+    //require('sweetalert2');
 } catch (e) {}
 
 /**
@@ -22,6 +33,16 @@ try {
 window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+
+window.axios.defaults.baseURL = process.env.MIX_APP_API_BASEURL;
+
+window.axios.defaults.paramsSerializer = function(params) {
+    return qs.stringify(params, {arrayFormat: 'repeat'})
+ };
+
+
+
+//window.swal = require('sweetalert2');
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

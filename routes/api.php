@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
 Route::group(['middleware' => 'api', 'as' => 'api.'], function () {
     //Auth
     Route::post('login', 'Api\Auth\AuthController@login')->name('login');
@@ -42,8 +41,20 @@ Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function(){
     //Admin
     Route::group(['middleware' => 'verified', 'prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::resource('users', 'Api\Admin\UserController');
-        Route::resource('roles', 'Api\Admin\RoleController');
-        Route::resource('privileges', 'Api\Admin\PrivilegeController');
+
+    });
+
+    //Superadmin
+    Route::group(['middleware' => 'verified', 'prefix' => 'superadmin', 'as' => 'superadmin.'], function () {
+
+        Route::resource('privileges', 'Api\Superadmin\PrivilegeController', ['only' => ['index', 'show', 'update']]);
+        Route::resource('roles', 'Api\Superadmin\RoleController', ['only' => ['index']]);
+        Route::group(['prefix' => 'privileges/{privilege}', 'as' => 'privileges.{privilege}.'], function () {
+            Route::resource('users', 'Api\Superadmin\Privilege\UserController', ['only' => ['index', 'store', 'destroy']]);
+            Route::resource('roles', 'Api\Superadmin\Privilege\RoleController', ['only' => ['index', 'store', 'destroy']]);
+        });
+
+        //Route::resource('roles', 'Api\Superadmin\RoleController');
     });
 
 });
