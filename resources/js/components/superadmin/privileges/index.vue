@@ -1,6 +1,6 @@
 <template>
     <div>
-        <VDataTable
+        <v-datatable
             :numbering="true"
             :columns="columns"
             :items.sync="privileges.data"
@@ -31,15 +31,13 @@
                     </button>
                 </td>
             </template>
-        </VDataTable>
+        </v-datatable>
     </div>
 </template>
 
 <script>
-import VDataTable from "@/components/vDatatable";
 
 export default {
-    components: { VDataTable },
     data() {
         return {
             filters: {

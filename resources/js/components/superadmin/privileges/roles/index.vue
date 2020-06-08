@@ -20,7 +20,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-12">
-                        <VDataTable
+                        <v-datatable
                             :numbering="true"
                             :columns="columns"
                             :items="roles.data"
@@ -45,7 +45,7 @@
                                     </button>
                                 </td>
                             </template>
-                        </VDataTable>
+                        </v-datatable>
                     </div>
                 </div>
             </div>
@@ -58,11 +58,9 @@
 </template>
 
 <script>
-import VDataTable from "@/components/vDatatable";
 import AssignRole from "@/components/superadmin/privileges/roles/assignRole";
 
 export default {
-    components: { VDataTable, AssignRole },
     props: {
         privilege_id: {
             type: Number,

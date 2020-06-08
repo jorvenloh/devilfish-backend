@@ -14,6 +14,11 @@ Vue.component(
 );
 
 Vue.component(
+    'v-datatable',
+    require('./components/VDatatable.vue').default
+);
+
+Vue.component(
     'privileges-index',
     require('./components/superadmin/privileges/index.vue').default
 );
@@ -31,4 +36,39 @@ Vue.component(
 Vue.component(
     'privilege-roles',
     require('./components/superadmin/privileges/roles/index.vue').default
+);
+
+Vue.component(
+    'articles-create',
+    require('./components/admin/articles/create.vue').default
+);
+
+Vue.component(
+    'articles-index',
+    require('./components/admin/articles/index.vue').default
+);
+
+Vue.component(
+    'articles-show',
+    require('./components/admin/articles/show.vue').default
+);
+
+Vue.component(
+    'products-create',
+    require('./components/admin/products/create.vue').default
+);
+
+Vue.component(
+    'products-index',
+    require('./components/admin/products/index.vue').default
+);
+
+Vue.component(
+    'products-show',
+    require('./components/admin/products/show.vue').default
+);
+
+Vue.component(
+    'genres-index',
+    require('./components/genres/index.vue').default
 );

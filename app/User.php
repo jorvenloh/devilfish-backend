@@ -67,4 +67,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphToMany('App\Privilege', 'privilegeable');
     }
 
+    public function articles()
+    {
+        return $this->hasMany('App\Article', 'user_id');
+    }
+
 }

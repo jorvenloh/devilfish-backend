@@ -28,10 +28,8 @@
             @yield('breadcrumb')
 
             <!-- Main content -->
-            <section class="content">
-                <div class="container-fluid">
-                    @yield('content')
-                </div>
+            <section class="content pb-3">
+                @yield('content')
             </section>
             <!-- /.content -->
         </div>

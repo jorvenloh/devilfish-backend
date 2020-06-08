@@ -4,27 +4,25 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Article;
+use App\Http\Resources\ArticleResource;
+use App\Http\Requests\ArticleRequest;
+use App\Enumerations\Article\Status as ArticleStatus;
 
-class PostController extends Controller
+class ArticleController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ArticleRequest $request)
     {
-        //
-    }
+        $this->authorize('index', Article::class);
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $articles = Article::filtered($request)->paginate(config('system.default_pagination_number'));
+
+        return ArticleResource::collection($articles);
     }
 
     /**
@@ -35,7 +33,15 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $article = Article::create([
+            'title' => $request->title,
+            'body' => json_encode($request->body),
+            'status' => ArticleStatus::SAVED]
+        );
+
+        $article->author()->associate($request->user())->save();
+
+        return $article ? response()->json(['success' => true], 200) : response()->json(['success' => false], 500);
     }
 
     /**
@@ -44,20 +50,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, Article $article)
     {
-        //
-    }
+        $this->authorize('show', Article::class);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        $article->load('author');
+
+        return new ArticleResource($article);
     }
 
     /**

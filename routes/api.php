@@ -27,6 +27,9 @@ Route::group(['middleware' => 'api', 'as' => 'api.'], function () {
         Route::get('verify/{id}/{hash}', 'Api\Auth\VerificationController@verify')->middleware('throttle:60,1')->name('verify');
     });
 
+    //guest
+    Route::resource('genres', 'Api\GenreController', ['only' => ['index']]);
+
 });
 
 Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function(){
@@ -41,7 +44,9 @@ Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function(){
     //Admin
     Route::group(['middleware' => 'verified', 'prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::resource('users', 'Api\Admin\UserController');
-
+        Route::resource('articles', 'Api\Admin\ArticleController', ['except' => ['create', 'edit']]);
+        Route::resource('genres', 'Api\Admin\GenreController', ['except' => ['create', 'edit']]);
+        Route::resource('crews', 'Api\Admin\CrewController', ['except' => ['create', 'edit']]);
     });
 
     //Superadmin

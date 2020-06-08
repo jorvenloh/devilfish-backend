@@ -18,6 +18,12 @@ Route::group(['middleware' => 'auth'], function(){
     //AD/SA
     Route::group(['prefix' => 'admin', 'middleware' => ['hasRole:SA;AD'], 'as' => 'admin.'], function(){
         Route::get('/home', 'Admin\HomeController@index')->name('home');
+
+        Route::resource('/articles', 'Admin\ArticleController', ['only' => ['index', 'show', 'create', 'edit']]);
+        Route::resource('/products', 'Admin\ProductController', ['only' => ['index', 'show', 'create', 'edit']]);
+        Route::resource('/genres', 'Admin\GenreController', ['only' => ['index']]);
+        Route::resource('/crews', 'Admin\CrewController', ['except' => ['update', 'destroy']]);
+
     });
 
     //Sole SA

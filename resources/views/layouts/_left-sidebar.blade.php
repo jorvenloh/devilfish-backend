@@ -30,21 +30,21 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/articles?status=pending" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Pending</p>
+                            <a href="/admin/articles/create" class="nav-link">
+                                <i class="fas fa-plus nav-icon"></i>
+                                <p>Create new</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/articles?status=pending" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Posted</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="../../index3.html" class="nav-link">
+                            <a href="/admin/articles?status=saved" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Saved</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/articles?status=published" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Published</p>
                             </a>
                         </li>
                     </ul>
@@ -59,15 +59,21 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/articles?status=pending" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Posted</p>
+                            <a href="/admin/products/create" class="nav-link">
+                                <i class="fas fa-plus nav-icon"></i>
+                                <p>Create new</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/articles?status=pending" class="nav-link">
+                            <a href="/admin/products?status=saved" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Saved</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/products?status=published" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Published</p>
                             </a>
                         </li>
                     </ul>
@@ -125,7 +131,7 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/users?role=admin" class="nav-link">
+                            <a href="/admin/crews" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Actors/Directors</p>
                             </a>
@@ -137,9 +143,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/users?role=registered" class="nav-link">
+                            <a href="/admin/genres" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Genre</p>
+                                <p>Genres</p>
                             </a>
                         </li>
                         <li class="nav-item">

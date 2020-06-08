@@ -15,6 +15,26 @@ trait UserTrait {
             ->exists();
     }
 
+    public function isAdmin()
+    {
+        return $this->roles()->whereIn('code', ['SA', 'AD'])->exists();
+    }
+
+    public function isSuperAdmin()
+    {
+        return $this->roles()->where('code', 'SA')->exists();
+    }
+
+    public function hasPrivileges(...$privileges)
+    {
+        return $this->privileges()->whereIn('name', $privileges)->exists() ||
+            $this->roles()->where(function ($query) use ($privileges) {
+                $query->whereHas('privileges', function ($query) use ($privileges){
+                    $query->whereIn('name', $privileges);
+                });
+            })->exists();
+    }
+
     public function sendPasswordResetNotificationForApi($token)
     {
         try {

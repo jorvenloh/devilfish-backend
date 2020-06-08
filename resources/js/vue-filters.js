@@ -1,3 +1,6 @@
+var moment = require('moment');
+moment().format();
+
 Vue.filter('numberFormat', function(value){
     if(!value)
         return '0';
@@ -30,7 +33,7 @@ Vue.filter('toStandardDateTime', function(value, showTime){
 
 	var date = moment(value);
 	if(!value || !moment(date, 'YYYY-MM-DD', true).isValid())
-        return '--Not Stated--';
+        return '--';
 	else{
 		return moment(value).format(showTime ? 'DD-MMM-YYYY, h:mm:ss a' : 'DD-MMM-YYYY');
 	}

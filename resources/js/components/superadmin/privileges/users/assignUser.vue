@@ -49,7 +49,7 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col">
-                            <VDataTable
+                            <v-datatable
                                 :numbering="true"
                                 :columns="columns"
                                 :items="users.data"
@@ -77,7 +77,7 @@
                                         </div>
                                     </td>
                                 </template>
-                            </VDataTable>
+                            </v-datatable>
                         </div>
                     </div>
                     <div class="float-right" v-if="checkedUsers.length">
@@ -99,10 +99,9 @@
 </template>
 
 <script>
-import VDataTable from "@/components/vDatatable";
 
 export default {
-    components: { VDataTable },
+
     props: {
         privilege_id: {
             type: Number,

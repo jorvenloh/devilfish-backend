@@ -19,7 +19,7 @@ class PrivilegeController extends Controller
     {
         $this->authorize('index', [Privilege::class]);
 
-        $privileges = Privilege::paginate(10);
+        $privileges = Privilege::paginate(config('system.default_pagination_number'));
 
         return PrivilegeResource::collection($privileges);
     }

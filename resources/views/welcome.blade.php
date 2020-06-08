@@ -6,7 +6,10 @@
 <div class="container h-100">
     <div class="row align-items-center h-100">
         <div class="col-6 mx-auto">
-            <h2 class="text-center mb-4 text-theme-brown">DEVILFISH . BACKSTAGE</h2>
+            <div class="text-center">
+                <img src="{{ asset('/images/logos/DEVILFISH-Logo-dark-xl.png') }}" alt="DEVILFISH LOGO">
+            </div>
+            <h4 class="text-center my-3 text-theme-brown">BACKSTAGE</h4>
             <div class="card bg-light">
                 <div class="card-header">{{ __('Login') }}</div>
                 <div class="card-body">
