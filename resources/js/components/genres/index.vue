@@ -132,7 +132,6 @@ export default {
                 })
                 .then(response => {
                     const { data: genres, current_filters } = response.data;
-                    console.log(current_filters);
                     this.genres = genres;
                     this.current_filters = current_filters;
                 })

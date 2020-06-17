@@ -2,6 +2,30 @@
     <div class="row">
         <div class="col-sm-4">
             <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Profile</h3>
+                    <div class="card-tools">
+                        <button
+                            class="btn btn-tool"
+                            type="button"
+                            id="dropdownMenuButton"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false"
+                        >
+                            <i class="fas fa-fw fa-ellipsis-v" aria-hidden="true"></i>
+                        </button>
+                        <div
+                            class="dropdown-menu dropdown-menu-right"
+                            aria-labelledby="dropdownMenuButton"
+                        >
+                            <a class="dropdown-item text-danger" href="#" @click="confirmDeleteCrew">
+                                <i class="fas fa-fw fa-trash-alt" aria-hidden="true"></i>
+                                Delete Profile
+                            </a>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body box-profile">
                     <div class="text-center">
                         <img
@@ -15,10 +39,10 @@
                         {{name}}
                         <button
                             type="button"
-                            class="btn btn-tool"
+                            class="btn btn-tool position-absolute m-0"
                             @click="editName"
                             data-toggle="tooltip"
-                            data-placement="left"
+                            data-placement="right"
                             title="Edit Name"
                         >
                             <i class="fas fa-edit"></i>
@@ -127,18 +151,18 @@ export default {
                     this.loading = false;
                 });
         },
-        async editName(){
+        async editName() {
             const { value: editedName } = await this.$swal.fire({
                 title: "Edit Nmae",
                 input: "text",
                 confirmButtonText: "Save",
+                showCloseButton: true,
+                showCancelButton: true,
                 inputValue: this.name
             });
             if (editedName) {
                 this.patchCrew({ name: editedName.trim() });
             }
-            else
-                this.alertError({}, {message: 'Name field is required'});
         },
         editDescription() {
             this.is_editing_description = true;
@@ -163,6 +187,22 @@ export default {
                 .catch(error => {
                     this.errors = error.response.data.errors;
                     // this.alertError();
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        deleteCrew() {
+            this.loading = true;
+            axios
+                .delete(`admin/crews/${this.crew_id}`)
+                .then(response => {
+                    this.alertSuccess();
+                    window.location.href =
+                        process.env.MIX_APP_URL + `/admin/crews`;
+                })
+                .catch(error => {
+                    this.alertError();
                 })
                 .finally(() => {
                     this.loading = false;
@@ -196,6 +236,14 @@ export default {
         },
         syncTags(tags) {
             this.postTags({ sync_tags: tags });
+        },
+        confirmDeleteCrew() {
+            this.confirm(
+                () => {
+                    this.deleteCrew();
+                },
+                { text: "Delete this profile?" }
+            );
         }
     }
 };

@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::resource('/products', 'Admin\ProductController', ['only' => ['index', 'show', 'create', 'edit']]);
         Route::resource('/genres', 'Admin\GenreController', ['only' => ['index']]);
         Route::resource('/crews', 'Admin\CrewController', ['except' => ['update', 'destroy']]);
+        Route::resource('/tags', 'Admin\TagController', ['only' => ['index', 'show']]);
 
     });
 

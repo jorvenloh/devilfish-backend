@@ -21,7 +21,9 @@ class CrewController extends Controller
      */
     public function index(Request $request)
     {
-        $crews = Crew::filtered($request)->orderBy('name', 'asc')->paginate(21);
+        $sorter = collect($request->sorter);
+
+        $crews = Crew::filtered($request->filters)->orderBy($sorter->get('target'), $sorter->get('order'))->paginate(21);
 
         return CrewResource::collection($crews)->additional(['current_filters' => processFilters($request)]);
     }
@@ -32,7 +34,7 @@ class CrewController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CrewRequest $request)
     {
         $this->authorize('store', [Crew::class]);
 

@@ -47,16 +47,18 @@ Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function(){
         Route::resource('users', 'Api\Admin\UserController');
         Route::resource('articles', 'Api\Admin\ArticleController', ['except' => ['create', 'edit']]);
         Route::resource('genres', 'Api\Admin\GenreController', ['except' => ['create', 'edit']]);
-        Route::resource('crews', 'Api\Admin\CrewController', ['except' => ['create', 'edit']]);
 
+        Route::resource('crews', 'Api\Admin\CrewController', ['except' => ['create', 'edit']]);
         Route::group(['prefix' => 'crews/{crew}', 'as' => 'crews.{crew}.'], function () {
             Route::resource('products', 'Api\Admin\Crew\ProductController', ['except' => ['create', 'edit']]);
             Route::resource('images', 'Api\Admin\Crew\ImageController', ['except' => ['create', 'edit']]);
-            Route::resource('tags', 'Api\Admin\Crew\TagController', ['only' => ['store']]);
+            Route::resource('tags', 'Api\Admin\Crew\TagController', ['only' => ['index', 'store']]);
         });
 
         Route::get('products/options', 'Api\Admin\ProductController@selectOptions')->name('products.options');
         Route::resource('products', 'Api\Admin\ProductController', ['except' => ['create', 'edit']]);
+
+        Route::resource('tags', 'Api\Admin\TagController', ['only' => ['index', 'show']]);
     });
 
     //Superadmin

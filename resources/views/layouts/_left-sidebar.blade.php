@@ -137,7 +137,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/users?role=user" class="nav-link">
+                            <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Discussions</p>
                             </a>
@@ -149,8 +149,8 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/users?role=follower" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                            <a href="/admin/tags" class="nav-link">
+                                <i class="fas fa-hashtag nav-icon" aria-hidden="true"></i>
                                 <p>Hashtags</p>
                             </a>
                         </li>

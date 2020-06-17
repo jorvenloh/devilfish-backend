@@ -107,3 +107,13 @@ Vue.component(
     'product-tiles',
     require('./components/products/productTiles.vue').default
 );
+
+Vue.component(
+    'tags-index',
+    require('./components/admin/tags/index.vue').default
+);
+
+Vue.component(
+    'tags-show',
+    require('./components/admin/tags/show.vue').default
+);

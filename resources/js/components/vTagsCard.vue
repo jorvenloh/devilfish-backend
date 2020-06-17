@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="mb-3">
+            <div class="mb-3" v-if="sortedTags.length">
                 <div v-if="!is_editing_tags">
                     <h4 class="d-inline mr-2" :key="index" v-for="(item, index) in sortedTags">
                         <span class="badge badge-light text-primary">#{{item.name}}</span>
@@ -35,6 +35,12 @@
                         </button>
                     </div>
                 </div>
+            </div>
+            <div class="mb-3 text-center" v-else>
+                <span class="text-muted">
+                    <i class="fas fa-info-circle" aria-hidden="true"></i>
+                    No tag found
+                </span>
             </div>
             <div>
                 <v-tag-input v-if="!is_editing_tags" v-on:save-tags="postTags"></v-tag-input>
@@ -66,12 +72,12 @@ export default {
     props: {
         tags: {
             type: Array,
-            default: () => [],
+            default: () => []
         },
         loading: {
             type: Boolean,
             required: true,
-            default: false,
+            default: false
         }
     },
     computed: {
@@ -98,14 +104,14 @@ export default {
         },
         saveSyncTags() {
             let sync_tags = _.map(this.form.sync_tags, "id");
-            this.$emit('sync-tags', sync_tags)
+            this.$emit("sync-tags", sync_tags);
         },
         postTags(tags) {
-            this.$emit('add-tags', tags)
+            this.$emit("add-tags", tags);
         },
         removeTags(index) {
             this.form.sync_tags.splice(index, 1);
-        },
+        }
     }
 };
 </script>

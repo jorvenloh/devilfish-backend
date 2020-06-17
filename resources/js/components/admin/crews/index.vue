@@ -3,7 +3,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Actors & Directors</h3>
-                <div class="card-tools" v-if="crews.data.length">
+                <div class="card-tools" v-if="crews.length">
                     <div class="btn-group">
                         <button
                             type="button"
@@ -15,9 +15,13 @@
                             <i class="fas fa-bars fa-fw" aria-hidden="true"></i>
                         </button>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <button class="dropdown-item" type="button">
-                                <i class="fas fa-fw fa-check"></i>
-                                Sort by name
+                            <button class="dropdown-item" type="button" @click="sortByName('asc')">
+                                <i class="fas fa-sort-alpha-down" aria-hidden="true"></i>
+                                Alphabetical order A-Z
+                            </button>
+                            <button class="dropdown-item" type="button" @click="sortByName('desc')">
+                                <i class="fas fa-sort-alpha-down-alt" aria-hidden="true"></i>
+                                Alphabetical order Z-A
                             </button>
                         </div>
                     </div>
@@ -33,7 +37,7 @@
                                 type="text"
                                 class="form-control"
                                 placeholder="Name"
-                                maxlength ="30"
+                                maxlength="30"
                             />
                         </div>
                     </div>
@@ -81,21 +85,30 @@
             </div>
         </div>
 
-        <div class="row mb-3" v-if="filteredItems.length">
+        <div class="row mb-3">
             <div class="col">
-                <div class="d-inline">
-                    <button class="btn btn-warning btn-badge text-capitalize" :key="index" v-for="(item, index) in filteredItems">{{item}}</button>
-                </div>
+                <div>
+                    <button
+                        class="btn btn-default btn-badge text-capitalize mr-2"
+                    >Found {{meta.total}}</button>
+                    <div v-if="filteredItems.length" class="d-inline">
+                        <button
+                            class="btn btn-warning btn-badge text-capitalize"
+                            :key="index"
+                            v-for="(item, index) in filteredItems"
+                        >{{item}}</button>
 
-                <button type="button" class="btn btn-danger ml-2" @click="resetFilters()">
-                    <i class="fas fa-redo" aria-hidden="true"></i>
-                    Reset
-                </button>
+                        <button type="button" class="btn btn-danger ml-2" @click="resetFilters()">
+                            <i class="fas fa-redo" aria-hidden="true"></i>
+                            Reset
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="d-flex flex-wrap">
-            <div class="card card-crew" v-for="crew in crews.data" :key="crew.name">
+            <div class="card card-crew" v-for="crew in crews" :key="crew.name">
                 <img v-if="crew.avatar" :src="crew.avatar" class="card-img-top" alt="Avatar" />
                 <div class="no-avatar" v-else></div>
                 <div class="card-body">
@@ -110,8 +123,8 @@
         <div class="row mb-5">
             <div class="col">
                 <v-paginator
-                    :links="crews.pagination.links"
-                    :meta="crews.pagination.meta"
+                    :links="links"
+                    :meta="meta"
                     :filters="filters"
                     v-on:go-to-page="goToPage"
                     :loading="loading"
@@ -127,9 +140,13 @@ export default {
     data() {
         return {
             filters: {},
-            crews: {
-                data: [],
-                pagination: {}
+            crews: {},
+            links: {},
+            meta: {},
+            page: 1,
+            sorter: {
+                target: "name",
+                order: "asc"
             },
             loading: false,
             product_options: [],
@@ -145,13 +162,16 @@ export default {
     mounted() {
         this.getCrews();
     },
-    computed:{
-        filteredItems(){
-            const { name, has_avatar, products} = this.current_filters
-            let filtered_items = []
-            if(name) filtered_items.push(name)
-            if(has_avatar != null) filtered_items.push(has_avatar ? 'With Avatar' : 'Without Avatar')
-            if(products) filtered_items.push(`Product #${products}`)
+    computed: {
+        filteredItems() {
+            const { name, has_avatar, products } = this.current_filters;
+            let filtered_items = [];
+            if (name) filtered_items.push(name);
+            if (has_avatar != null)
+                filtered_items.push(
+                    has_avatar ? "With Avatar" : "Without Avatar"
+                );
+            if (products) filtered_items.push(`Product #${products}`);
 
             return filtered_items;
         }
@@ -160,11 +180,17 @@ export default {
         getCrews() {
             this.loading = true;
             axios
-                .get("admin/crews", { params: this.filters })
+                .get("admin/crews", {
+                    params: {
+                        page: this.page,
+                        filters: this.filters,
+                        sorter: this.sorter
+                    }
+                })
                 .then(response => {
-                    this.crews.data = response.data.data;
-                    this.crews.pagination.links = response.data.links;
-                    this.crews.pagination.meta = response.data.meta;
+                    this.crews = response.data.data;
+                    this.links = response.data.links;
+                    this.meta = response.data.meta;
                     this.current_filters = response.data.current_filters;
                 })
                 .catch(error => {
@@ -184,7 +210,7 @@ export default {
         },
         goToPage(pageNumber) {
             if (pageNumber) {
-                this.filters.page = pageNumber;
+                this.page = pageNumber;
                 this.getCrews();
             }
         },
@@ -206,12 +232,17 @@ export default {
                     });
             }
         },
-        searchCrews(){
-            this.filters.page = 1;
+        searchCrews() {
+            this.page = 1;
             this.getCrews();
         },
         resetFilters() {
             this.filters = {};
+            this.getCrews();
+        },
+        sortByName(sortOrder) {
+            this.page = 1;
+            this.sorter = { target: "name", order: sortOrder };
             this.getCrews();
         }
     }

@@ -17,4 +17,19 @@ trait TagFilter
                 }
             });
     }
+
+    public function sortedBy($query, $sorter)
+    {
+        $sorter = collect($sorter)->reject(function ($item) {
+            return empty($item);
+        });
+
+        return $query
+            ->orderBy(function ($query) use ($sorter) {
+                if ($sorter->has('name')) {
+                    $query->orderBy('name', $sorter->get('name'));
+                }
+            });
+    }
+
 }

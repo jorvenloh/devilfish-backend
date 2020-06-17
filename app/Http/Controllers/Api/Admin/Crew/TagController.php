@@ -18,8 +18,6 @@ class TagController extends Controller
      */
     public function store(Request $request, Crew $crew)
     {
-        \Log::info($request->all());
-
         //add new tags
         if ($request->has('tags')) {
             foreach ($request->tags as $tag) {

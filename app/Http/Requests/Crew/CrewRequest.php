@@ -41,7 +41,7 @@ class CrewRequest extends FormRequest
             case 'POST':
                 return [
                     'name' => ['required','string', 'max:200', 'unique:App\Crew,name'],
-                    'description' => ['nullable', 'string', 'max:3000'],
+                    'description' => ['nullable', 'max:3000'],
                 ];
                 break;
             case 'PATCH':
