@@ -25,7 +25,7 @@ class CrewController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Crew::class);
+        $this->authorize('store', Crew::class);
 
         return view('admin.crews.create');
     }

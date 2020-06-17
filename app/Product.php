@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Filters\ProductFilter;
+use App\Enumerations\Image\Type as ImageType;
 
 class Product extends Model
 {
@@ -20,27 +21,32 @@ class Product extends Model
 
     public function videos()
     {
-
+        return $this->hasMany('App\Video');
     }
 
     public function genres()
     {
-        return $this->belongsToMany('App\Genre', 'product_genre', 'product_id', 'genre_id');
+        return $this->belongsToMany('App\Genre', 'product_genre');
     }
 
     public function images()
     {
+        return $this->morphToMany('App\Image', 'imageable');
+    }
 
+    public function poster()
+    {
+        return $this->morphMany('App\Image', 'imageable')->where('type', ImageType::POSTER)->first();
     }
 
     public function tags()
     {
-
+        return $this->morphToMany('App\Tag', 'taggable');
     }
 
-    public function personels()
+    public function crews()
     {
-
+        return $this->belongsToMany('App\Crew', 'product_crew');
     }
 
     // public function discussions()

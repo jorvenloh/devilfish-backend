@@ -7,6 +7,7 @@ require('./bootstrap');
 require('./vue-components');
 require('./vue-filters');
 require('./plugins/VueSelect');
+require('./plugins/Popper');
 
 /**
  * The following block of code may be used to automatically register your

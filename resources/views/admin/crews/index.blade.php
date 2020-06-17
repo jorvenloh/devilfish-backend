@@ -17,7 +17,7 @@
 @section('content')
 
 <div class="container">
-    Crew index
+    <crews-index></crews-index>
 </div>
 
 @endsection

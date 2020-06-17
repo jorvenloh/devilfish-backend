@@ -22,7 +22,7 @@
 
 @section('content')
 <div class="container">
-    Crew create
+    <crews-create></crews-create>
 </div>
 @endsection
 

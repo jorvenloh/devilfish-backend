@@ -3,7 +3,7 @@
     <!-- Brand Logo -->
     <div class="text-center">
         <a href="/" class="brand-link">
-            <h2 class="brand-text font-weight-light mb-0">DEVIL<span>FISH</span></h2>
+            <img src="{{ asset('/images/logos/DEVILFISH-Logo-light-md.png') }}" alt="DEVILFISH LOGO">
         </a>
     </div>
 

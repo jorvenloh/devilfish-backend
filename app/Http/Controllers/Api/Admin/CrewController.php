@@ -5,8 +5,12 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Crew;
+use App\Image;
+use App\Tag;
+use App\Product;
 use App\Http\Resources\CrewResource;
-
+use App\Enumerations\Image\Type as ImageType;
+use App\Http\Requests\Crew\CrewRequest;
 
 class CrewController extends Controller
 {
@@ -17,9 +21,9 @@ class CrewController extends Controller
      */
     public function index(Request $request)
     {
-        $crews = Crew::filtered($request)->paginate(config('system.default_pagination_number'));
+        $crews = Crew::filtered($request)->orderBy('name', 'asc')->paginate(21);
 
-        return CrewResource::collection($crews)->additional(['current_filters' => $request->name]);
+        return CrewResource::collection($crews)->additional(['current_filters' => processFilters($request)]);
     }
 
     /**
@@ -35,7 +39,26 @@ class CrewController extends Controller
         $crew = Crew::create([
             'name' => $request->name,
             'description' => $request->description
-            ]);
+        ]);
+
+        //store image
+        if ($request->hasFile('image')) {
+            if ($request->file('image')->isValid()) {
+                $image_file = $request->file('image');
+                $image = Image::createAndStore($image_file, $crew->id, 'images_crews', ImageType::AVATAR);
+                $crew->images()->save($image);
+            }
+        }
+
+        //create & associate tags by name
+        if ($request->has('tags')) {
+            foreach ($request->tags as $tag) {
+                $tag = Tag::firstOrCreate(['name' => $tag]);
+                $crew->tags()->attach($tag);
+            }
+        }
+
+        \Log::info(__Method__ . ' @ Admin #' . $request->user()->id . '. has created crew #' . $crew->id);
 
         return response()->json(['crew' => new CrewResource($crew)], 200);
     }
@@ -46,8 +69,10 @@ class CrewController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Crew $crew)
+    public function show(Crew $crew)
     {
+        $crew->load('tags');
+
         return new CrewResource($crew);
     }
 
@@ -58,16 +83,16 @@ class CrewController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Crew $crew)
+    public function update(CrewRequest $request, Crew $crew)
     {
         $this->authorize('update', [Crew::class]);
 
-        $crew->update([
-            'name' => $request->name,
-            'description' => $request->description
-        ]);
+        $newInputs = [];
+        if ($request->has('name')) $newInputs['name'] = $request->name;
+        if ($request->has('description')) $newInputs['description'] = $request->description;
+        if(!empty($newInputs)) $crew->update($newInputs);
 
-        return response()->json(['crew' => new CrewResource($crew)], 200);
+        return response()->json(new CrewResource($crew), 200);
     }
 
     /**

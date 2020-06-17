@@ -6088,3 +6088,21 @@ readers do not read off random characters that represent icons */
   color: #E1B382;
 }
 
+.sidebar-dark-primary {
+  background-color: #0D2429;
+}
+
+.btn-badge {
+  min-width: 60px;
+  border-radius: 3rem;
+  cursor: unset !important;
+}
+
+.btn-badge + .btn-badge {
+  margin-left: 0.5rem;
+}
+
+pre {
+  white-space: pre-line !important;
+}
+

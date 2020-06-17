@@ -234,9 +234,4 @@ export default {
 </script>
 
 <style scoped>
-.btn-badge{
-    min-width: 60px;
-    border-radius: 3rem;
-    cursor: unset !important;
-}
 </style>

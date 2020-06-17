@@ -5,10 +5,23 @@
 .bg-theme-brown{
     background-color: $theme-brown;
 }
-
 .text-theme-green{
     color: $theme-background;
 }
 .text-theme-brown{
     color: $theme-brown;
+}
+.sidebar-dark-primary{
+    background-color: $theme-background;
+}
+.btn-badge{
+    min-width: 60px;
+    border-radius: 3rem;
+    cursor: unset !important;
+}
+.btn-badge + .btn-badge{
+    margin-left: 0.5rem;
+}
+pre{
+    white-space: pre-line!important;
 }

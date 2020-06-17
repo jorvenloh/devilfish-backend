@@ -15,7 +15,22 @@ Vue.component(
 
 Vue.component(
     'v-datatable',
-    require('./components/VDatatable.vue').default
+    require('./components/vDatatable.vue').default
+);
+
+Vue.component(
+    'v-paginator',
+    require('./components/vPaginator.vue').default
+);
+
+Vue.component(
+    'v-tags-card',
+    require('./components/vTagsCard.vue').default
+);
+
+Vue.component(
+    'v-tag-input',
+    require('./components/vTagInput.vue').default
 );
 
 Vue.component(
@@ -71,4 +86,24 @@ Vue.component(
 Vue.component(
     'genres-index',
     require('./components/genres/index.vue').default
+);
+
+Vue.component(
+    'crews-create',
+    require('./components/admin/crews/create.vue').default
+);
+
+Vue.component(
+    'crews-index',
+    require('./components/admin/crews/index.vue').default
+);
+
+Vue.component(
+    'crews-show',
+    require('./components/admin/crews/show.vue').default
+);
+
+Vue.component(
+    'product-tiles',
+    require('./components/products/productTiles.vue').default
 );

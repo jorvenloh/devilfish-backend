@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\ImageTrait;
 
 class Image extends Model
 {
+    use ImageTrait;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -19,25 +22,12 @@ class Image extends Model
         'deleted_at'
     ];
 
-    public function users()
+    /**
+     * Get all of the owning commentable models.
+     */
+    public function imageable()
     {
-        return $this->morphedByMany('App\User', 'imageable');
+        return $this->morphTo();
     }
-
-    public function products()
-    {
-        return $this->morphedByMany('App\Product', 'imageable');
-    }
-
-    public function articles()
-    {
-        return $this->morphedByMany('App\Article', 'imageable');
-    }
-
-    public function crew()
-    {
-        return $this->morphedByMany('App\Crew', 'imageable');
-    }
-
 
 }

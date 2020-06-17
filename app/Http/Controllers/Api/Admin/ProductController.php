@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Product;
+use App\Http\Resources\ProductResource;
 
 class ProductController extends Controller
 {
@@ -12,19 +14,29 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function selectOptions(Request $request)
     {
-        //
+        $products = Product::filtered($request)->get()->take(10);
+
+        $select_options = [];
+        foreach ($products as $product) {
+            $select_options[] = [
+                'value' => $product->id,
+                'label' => $product->title,
+            ];
+        }
+
+        return $select_options;
     }
 
     /**
@@ -44,20 +56,11 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
-    }
+        //$$product->load('videos');
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return new ProductResource($product);
     }
 
     /**
