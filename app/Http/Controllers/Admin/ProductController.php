@@ -26,7 +26,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Product::class);
+        $this->authorize('manage', Product::class);
 
         $select_options = ['product_type' => ProductType::toJsonOptions()];
 
@@ -42,19 +42,6 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         return view('admin.products.show', ['product' => $product]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Product $product)
-    {
-        $this->authorize('edit', Product::class);
-
-        return view('admin.products.edit', ['product' => $product]);
     }
 
 }

@@ -36,32 +36,9 @@ class ProductPolicy
      * @param  \App\User $user
      * @return  boolean
      */
-    public function create(User $user)
+    public function manage(User $user)
     {
         return $user->isSuperAdmin() ? true : $this->isPrivilegeHolder($user);
-    }
-
-    /**
-     * Check if user can edit this article
-     * YES only if user is superadmin, or product manager
-     * @param  \App\User $user
-     * @return  boolean
-     */
-    public function edit(User $user)
-    {
-        return $user->isSuperAdmin() ? true : ($this->isPrivilegeHolder($user));
-    }
-
-    /**
-     * Check if user can update this article
-     * YES only if user is superadmin, or product manager
-     *
-     * @param  \App\User $user
-     * @return  boolean
-     */
-    public function update(User $user)
-    {
-        return $user->isSuperAdmin() ? true : ($this->isPrivilegeHolder($user));
     }
 
     /**

@@ -20,7 +20,8 @@ class ProductRequest extends FormRequest
         switch ($this->method()) {
             case 'POST':
             case 'PATCH':
-                return $this->user()->can('store', Product::class);
+            case 'DESTROY':
+                return $this->user()->can('manage', Product::class);
                 break;
 
             default:
@@ -40,9 +41,13 @@ class ProductRequest extends FormRequest
                 return ['status' => ['sometimes', 'nullable', Rule::in(ProductStatus::get())]];
                 break;
             case 'POST':
+                return [
+                    'title' => ['required', 'string', 'max:200', 'unique:App\Product,title'],
+                    'type' => ['required', 'string', Rule::in(ProductType::get())],
+                ];
             case 'PATCH':
                 return [
-                    'title' => 'required|string',
+                    'title' => ['required', 'string', 'max:200', Rule::unique('products', 'title')->ignore($this->id)],
                     'type' => ['required', 'string', Rule::in(ProductType::get())]
                 ];
                 break;

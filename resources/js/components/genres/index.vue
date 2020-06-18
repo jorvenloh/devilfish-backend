@@ -1,36 +1,46 @@
 <template>
-    <div class="card">
-        <div class="card-header">
-            Genres
-            <span v-if="genres.length">({{genres.length}})</span>
-        </div>
-        <div class="card-body">
-            <div class="row">
-                <div class="col-sm-5">
-                    <input
-                        class="form-control"
-                        type="text"
-                        v-model="filters.name"
-                        placeholder="Search"
-                    />
-                </div>
-                <div class="col">
-                    <button
-                        type="button"
-                        class="btn btn-default text-capitalize mr-2"
-                        @click="getGenres()"
-                    >
-                        <i class="fas fa-search"></i>
-                        Search
-                    </button>
+    <div>
+        <div class="card">
+            <div class="card-header">Genres</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-5">
+                        <input
+                            class="form-control"
+                            type="text"
+                            v-model="filters.name"
+                            v-on:keyup.enter="getGenres"
+                            placeholder="Search"
+                        />
+                    </div>
+                    <div class="col">
+                        <button
+                            type="button"
+                            class="btn btn-default text-capitalize mr-2"
+                            @click="getGenres()"
+                        >
+                            <i class="fas fa-search"></i>
+                            Search
+                        </button>
+                    </div>
                 </div>
             </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-outline-success" @click="storeGenre()">
+                    <i class="fas fa-plus"></i>
+                    Add New Genre
+                </button>
+            </div>
 
-            <div class="row mt-3" v-if="current_filters">
-                <div class="col">
-                    <span class="mr-2">Filters:</span>
-                    <button class="btn btn-outline-primary btn-badge ml-2">
-                         {{current_filters}}</button>
+            <div class="overlay dark" v-if="loading">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+        </div>
+        <div class="row my-3">
+            <div class="col">
+                <button class="btn btn-default btn-badge mr-2">Found {{genres.length}}</button>
+                <div v-if="current_filters" class="d-inline">
+                    <button class="btn btn-warning btn-badge">{{current_filters}}</button>
                     <button
                         type="button"
                         class="btn btn-outline-danger ml-2"
@@ -41,62 +51,48 @@
                     </button>
                 </div>
             </div>
-            <div class="row mt-5">
-                <div class="col-12">
-                    <button
-                        type="button"
-                        class="btn btn-outline-success mr-2 mb-2 text-capitalize"
-                        @click="storeGenre()"
-                    >
-                        <i class="fas fa-plus"></i>
-                        New
-                    </button>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <button
+                    type="button"
+                    class="btn btn-light mr-2 mb-2 text-capitalize"
+                    v-for="genre in GenreSorted"
+                    :key="genre.id"
+                    @click="showActionButton(genre)"
+                >
+                    {{ genre.name }}
+                    <span class="right badge badge-success" v-if="genre.is_new">New</span>
+                    <span class="right badge badge-warning" v-else-if="genre.is_edited">Edited</span>
+                </button>
 
-                    <button
-                        type="button"
-                        class="btn btn-light mr-2 mb-2 text-capitalize"
-                        v-for="genre in GenreSorted"
-                        :key="genre.id"
-                        @click="showActionButton(genre)"
-                    >
-                        {{ genre.name }}
-                        <span
-                            class="right badge badge-success"
-                            v-if="genre.is_new"
-                        >New</span>
-                        <span class="right badge badge-warning" v-else-if="genre.is_edited">Edited</span>
-                    </button>
-
-                    <div class="d-block mt-1 p-3 text-center bg-light" v-if="GenreSorted.length == 0">
-                        <i class="far fa-folder-open"></i>
-                        No result found
-                    </div>
-
+                <div class="d-block mt-1 p-3 text-center bg-light" v-if="GenreSorted.length == 0">
+                    <i class="far fa-folder-open"></i>
+                    No result found
                 </div>
             </div>
-            <div class="row" v-if="errors.name">
-                <div class="col">
-                    <span class="help-block text-danger d-block">{{ errors.name[0] }}</span>
-                </div>
+            <div class="card-footer text-right" v-if="notEmptyObject(genre)">
+                <button
+                    type="button"
+                    class="btn btn-warning mr-2 text-capitalize"
+                    @click="editGenre()"
+                >
+                    <i class="fas fa-edit"></i>
+                    Edit
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-danger text-capitalize"
+                    :disabled="loading"
+                    @click="deleteGenre()"
+                >
+                    <i class="fas fa-trash"></i>
+                    Delete
+                </button>
             </div>
-        </div>
-        <div class="card-footer text-right" v-if="notEmptyObject(genre)">
-            <button type="button" class="btn btn-warning mr-2 text-capitalize" @click="editGenre()">
-                <i class="fas fa-edit"></i>
-                Edit
-            </button>
-            <button
-                type="button"
-                class="btn btn-danger text-capitalize"
-                :disabled="loading"
-                @click="deleteGenre()"
-            >
-                <i class="fas fa-trash"></i>
-                Delete
-            </button>
-        </div>
-        <div class="overlay dark" v-if="loading">
-            <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            <div class="overlay dark" v-if="loading">
+                <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
         </div>
     </div>
 </template>
@@ -153,7 +149,8 @@ export default {
                 title: "New Genre",
                 input: "text",
                 inputPlaceholder: "Enter new genre title",
-                confirmButtonText: "Create"
+                confirmButtonText: "Create",
+                showCancelButton: true
             });
 
             if (newGenreTitle) {

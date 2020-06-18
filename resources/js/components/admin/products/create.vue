@@ -22,7 +22,6 @@
                 <v-select v-model="form.type" :reduce="type => type.value" :options="ProductTypesOptions"></v-select>
             </div>
 
-
         </div>
         <div class="card-footer text-right">
             <button type="button" class="btn btn-success" @click="postCreateProduct()">

@@ -114,7 +114,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="/admin/plan" class="nav-link {{ (request()->is('admin/plan')) ? 'active' : '' }}">
+                    <a href="/admin/plans" class="nav-link {{ (request()->is('admin/plans')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-cubes"></i>
                         <p>
                             Plans

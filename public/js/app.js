@@ -5891,7 +5891,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     selectOptions: {
@@ -6256,10 +6255,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -6319,7 +6314,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   title: "New Genre",
                   input: "text",
                   inputPlaceholder: "Enter new genre title",
-                  confirmButtonText: "Create"
+                  confirmButtonText: "Create",
+                  showCancelButton: true
                 });
 
               case 2:
@@ -73041,74 +73037,103 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _c("div", { staticClass: "card-header" }, [
-      _vm._v("\n        Genres\n        "),
-      _vm.genres.length
-        ? _c("span", [_vm._v("(" + _vm._s(_vm.genres.length) + ")")])
-        : _vm._e()
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-body" }, [
-      _c("div", { staticClass: "row" }, [
-        _c("div", { staticClass: "col-sm-5" }, [
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.filters.name,
-                expression: "filters.name"
-              }
-            ],
-            staticClass: "form-control",
-            attrs: { type: "text", placeholder: "Search" },
-            domProps: { value: _vm.filters.name },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
+  return _c("div", [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-header" }, [_vm._v("Genres")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-body" }, [
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col-sm-5" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.filters.name,
+                  expression: "filters.name"
                 }
-                _vm.$set(_vm.filters, "name", $event.target.value)
-              }
-            }
-          })
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-default text-capitalize mr-2",
-              attrs: { type: "button" },
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: "Search" },
+              domProps: { value: _vm.filters.name },
               on: {
-                click: function($event) {
-                  return _vm.getGenres()
+                keyup: function($event) {
+                  if (
+                    !$event.type.indexOf("key") &&
+                    _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+                  ) {
+                    return null
+                  }
+                  return _vm.getGenres($event)
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.filters, "name", $event.target.value)
                 }
               }
-            },
-            [
-              _c("i", { staticClass: "fas fa-search" }),
-              _vm._v("\n                    Search\n                ")
-            ]
-          )
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-default text-capitalize mr-2",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.getGenres()
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "fas fa-search" }),
+                _vm._v("\n                        Search\n                    ")
+              ]
+            )
+          ])
         ])
       ]),
       _vm._v(" "),
-      _vm.current_filters
-        ? _c("div", { staticClass: "row mt-3" }, [
-            _c("div", { staticClass: "col" }, [
-              _c("span", { staticClass: "mr-2" }, [_vm._v("Filters:")]),
-              _vm._v(" "),
-              _c(
-                "button",
-                { staticClass: "btn btn-outline-primary btn-badge ml-2" },
-                [
-                  _vm._v(
-                    "\n                     " + _vm._s(_vm.current_filters)
-                  )
-                ]
-              ),
+      _c("div", { staticClass: "card-footer" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-outline-success",
+            attrs: { type: "button" },
+            on: {
+              click: function($event) {
+                return _vm.storeGenre()
+              }
+            }
+          },
+          [
+            _c("i", { staticClass: "fas fa-plus" }),
+            _vm._v("\n                Add New Genre\n            ")
+          ]
+        )
+      ]),
+      _vm._v(" "),
+      _vm.loading
+        ? _c("div", { staticClass: "overlay dark" }, [
+            _c("i", { staticClass: "fas fa-2x fa-sync-alt fa-spin" })
+          ])
+        : _vm._e()
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "row my-3" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("button", { staticClass: "btn btn-default btn-badge mr-2" }, [
+          _vm._v("Found " + _vm._s(_vm.genres.length))
+        ]),
+        _vm._v(" "),
+        _vm.current_filters
+          ? _c("div", { staticClass: "d-inline" }, [
+              _c("button", { staticClass: "btn btn-warning btn-badge" }, [
+                _vm._v(_vm._s(_vm.current_filters))
+              ]),
               _vm._v(" "),
               _c(
                 "button",
@@ -73127,135 +73152,105 @@ var render = function() {
                 ]
               )
             ])
-          ])
-        : _vm._e(),
-      _vm._v(" "),
-      _c("div", { staticClass: "row mt-5" }, [
-        _c(
-          "div",
-          { staticClass: "col-12" },
-          [
-            _c(
+          : _vm._e()
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card" }, [
+      _c(
+        "div",
+        { staticClass: "card-body" },
+        [
+          _vm._l(_vm.GenreSorted, function(genre) {
+            return _c(
               "button",
               {
-                staticClass:
-                  "btn btn-outline-success mr-2 mb-2 text-capitalize",
+                key: genre.id,
+                staticClass: "btn btn-light mr-2 mb-2 text-capitalize",
                 attrs: { type: "button" },
                 on: {
                   click: function($event) {
-                    return _vm.storeGenre()
+                    return _vm.showActionButton(genre)
                   }
                 }
               },
               [
-                _c("i", { staticClass: "fas fa-plus" }),
-                _vm._v("\n                    New\n                ")
+                _vm._v(
+                  "\n                " +
+                    _vm._s(genre.name) +
+                    "\n                "
+                ),
+                genre.is_new
+                  ? _c("span", { staticClass: "right badge badge-success" }, [
+                      _vm._v("New")
+                    ])
+                  : genre.is_edited
+                  ? _c("span", { staticClass: "right badge badge-warning" }, [
+                      _vm._v("Edited")
+                    ])
+                  : _vm._e()
+              ]
+            )
+          }),
+          _vm._v(" "),
+          _vm.GenreSorted.length == 0
+            ? _c(
+                "div",
+                { staticClass: "d-block mt-1 p-3 text-center bg-light" },
+                [
+                  _c("i", { staticClass: "far fa-folder-open" }),
+                  _vm._v("\n                No result found\n            ")
+                ]
+              )
+            : _vm._e()
+        ],
+        2
+      ),
+      _vm._v(" "),
+      _vm.notEmptyObject(_vm.genre)
+        ? _c("div", { staticClass: "card-footer text-right" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-warning mr-2 text-capitalize",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.editGenre()
+                  }
+                }
+              },
+              [
+                _c("i", { staticClass: "fas fa-edit" }),
+                _vm._v("\n                Edit\n            ")
               ]
             ),
             _vm._v(" "),
-            _vm._l(_vm.GenreSorted, function(genre) {
-              return _c(
-                "button",
-                {
-                  key: genre.id,
-                  staticClass: "btn btn-light mr-2 mb-2 text-capitalize",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function($event) {
-                      return _vm.showActionButton(genre)
-                    }
+            _c(
+              "button",
+              {
+                staticClass: "btn btn-danger text-capitalize",
+                attrs: { type: "button", disabled: _vm.loading },
+                on: {
+                  click: function($event) {
+                    return _vm.deleteGenre()
                   }
-                },
-                [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(genre.name) +
-                      "\n                    "
-                  ),
-                  genre.is_new
-                    ? _c("span", { staticClass: "right badge badge-success" }, [
-                        _vm._v("New")
-                      ])
-                    : genre.is_edited
-                    ? _c("span", { staticClass: "right badge badge-warning" }, [
-                        _vm._v("Edited")
-                      ])
-                    : _vm._e()
-                ]
-              )
-            }),
-            _vm._v(" "),
-            _vm.GenreSorted.length == 0
-              ? _c(
-                  "div",
-                  { staticClass: "d-block mt-1 p-3 text-center bg-light" },
-                  [
-                    _c("i", { staticClass: "far fa-folder-open" }),
-                    _vm._v(
-                      "\n                    No result found\n                "
-                    )
-                  ]
-                )
-              : _vm._e()
-          ],
-          2
-        )
-      ]),
+                }
+              },
+              [
+                _c("i", { staticClass: "fas fa-trash" }),
+                _vm._v("\n                Delete\n            ")
+              ]
+            )
+          ])
+        : _vm._e(),
       _vm._v(" "),
-      _vm.errors.name
-        ? _c("div", { staticClass: "row" }, [
-            _c("div", { staticClass: "col" }, [
-              _c("span", { staticClass: "help-block text-danger d-block" }, [
-                _vm._v(_vm._s(_vm.errors.name[0]))
-              ])
-            ])
+      _vm.loading
+        ? _c("div", { staticClass: "overlay dark" }, [
+            _c("i", { staticClass: "fas fa-2x fa-sync-alt fa-spin" })
           ])
         : _vm._e()
-    ]),
-    _vm._v(" "),
-    _vm.notEmptyObject(_vm.genre)
-      ? _c("div", { staticClass: "card-footer text-right" }, [
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-warning mr-2 text-capitalize",
-              attrs: { type: "button" },
-              on: {
-                click: function($event) {
-                  return _vm.editGenre()
-                }
-              }
-            },
-            [
-              _c("i", { staticClass: "fas fa-edit" }),
-              _vm._v("\n            Edit\n        ")
-            ]
-          ),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-danger text-capitalize",
-              attrs: { type: "button", disabled: _vm.loading },
-              on: {
-                click: function($event) {
-                  return _vm.deleteGenre()
-                }
-              }
-            },
-            [
-              _c("i", { staticClass: "fas fa-trash" }),
-              _vm._v("\n            Delete\n        ")
-            ]
-          )
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    _vm.loading
-      ? _c("div", { staticClass: "overlay dark" }, [
-          _c("i", { staticClass: "fas fa-2x fa-sync-alt fa-spin" })
-        ])
-      : _vm._e()
+    ])
   ])
 }
 var staticRenderFns = []
