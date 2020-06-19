@@ -156,7 +156,7 @@ export default {
                 { value: true, label: "Yes" },
                 { value: false, label: "No" }
             ],
-            current_filters: []
+            current_filters: {}
         };
     },
     mounted() {
@@ -164,15 +164,16 @@ export default {
     },
     computed: {
         filteredItems() {
-            const { name, has_avatar, products } = this.current_filters;
             let filtered_items = [];
-            if (name) filtered_items.push(name);
-            if (has_avatar != null)
-                filtered_items.push(
-                    has_avatar ? "With Avatar" : "Without Avatar"
-                );
-            if (products) filtered_items.push(`Product #${products}`);
-
+            if (this.notEmptyObject(this.current_filters)) {
+                const { name, has_avatar, products } = this.current_filters;
+                if (name) filtered_items.push(name);
+                if (has_avatar != null)
+                    filtered_items.push(
+                        has_avatar ? "With Avatar" : "Without Avatar"
+                    );
+                if (products) filtered_items.push(`Product #${products}`);
+            }
             return filtered_items;
         }
     },

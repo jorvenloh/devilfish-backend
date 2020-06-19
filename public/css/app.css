@@ -6078,6 +6078,7 @@ readers do not read off random characters that represent icons */
 
 .bg-theme-brown {
   background-color: #E1B382;
+  color: white;
 }
 
 .text-theme-green {

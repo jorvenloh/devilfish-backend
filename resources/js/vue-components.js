@@ -34,6 +34,16 @@ Vue.component(
 );
 
 Vue.component(
+    'v-tiles',
+    require('./components/vTiles.vue').default
+);
+
+Vue.component(
+    'v-image-selector',
+    require('./components/vImageSelector.vue').default
+);
+
+Vue.component(
     'privileges-index',
     require('./components/superadmin/privileges/index.vue').default
 );
@@ -101,11 +111,6 @@ Vue.component(
 Vue.component(
     'crews-show',
     require('./components/admin/crews/show.vue').default
-);
-
-Vue.component(
-    'product-tiles',
-    require('./components/products/productTiles.vue').default
 );
 
 Vue.component(
