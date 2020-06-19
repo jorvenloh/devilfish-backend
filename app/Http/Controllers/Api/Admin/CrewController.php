@@ -29,6 +29,26 @@ class CrewController extends Controller
     }
 
     /**
+     * Display a option listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function selectOptions(Request $request)
+    {
+        $crews = Crew::filtered($request)->get()->take(10);
+
+        $select_options = [];
+        foreach ($crews as $crew) {
+            $select_options[] = [
+                'value' => $crew->id,
+                'label' => $crew->name,
+            ];
+        }
+
+        return $select_options;
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

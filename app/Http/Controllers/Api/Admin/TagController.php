@@ -24,6 +24,26 @@ class TagController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function selectOptions(Request $request)
+    {
+        $tags = Tag::filtered($request)->get()->take(10);
+
+        $select_options = [];
+        foreach ($tags as $tag) {
+            $select_options[] = [
+                'value' => $tag->id,
+                'label' => $tag->name,
+            ];
+        }
+
+        return $select_options;
+    }
+
+    /**
      * Display the specified resource.
      *
      * @param  int  $id

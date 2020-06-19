@@ -20,6 +20,10 @@
             <div class="form-group">
                 <label>Type</label>
                 <v-select v-model="form.type" :reduce="type => type.value" :options="ProductTypesOptions"></v-select>
+                <span
+                    v-if="errors.type"
+                    class="help-block text-danger d-block"
+                >{{ errors.type[0] }}</span>
             </div>
 
         </div>
@@ -42,7 +46,7 @@ export default {
     data() {
         return {
             form: {
-                title: "",
+                title: "New shit",
                 type: "movie"
             },
             errors: []
@@ -56,8 +60,28 @@ export default {
     mounted() {},
     methods: {
         postCreateProduct() {
-            console.log("post create prodcut");
+            this.confirm(() => {
+                this.loading = true;
+                this.errors = [];
+                axios
+                    .post(`admin/products`, this.form)
+                    .then(response => {
+                        this.alertSuccess();
+                        this.navigateToProductShow(response.data.product.id);
+                    })
+                    .catch(error => {
+                        this.alertError();
+                        this.errors = error.response.data.errors;
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+            });
+        },
+        navigateToProductShow(product_id){
+            window.location.href = process.env.MIX_APP_URL + `/admin/products/${product_id}`;
         }
+
     }
 };
 </script>
