@@ -7,10 +7,13 @@ use Illuminate\Http\Request;
 */
 function processFilters(Request $request)
 {
-    //$request->request->remove('page');
-    $filters = collect($request->filters)->reject(function ($item) {
-        return empty($item);
-    });
+    $request->request->remove('page');
 
-    return $filters;
+    foreach($request->all() as $key => $value){
+        if(is_null($value)){
+            $request->request->remove($key);
+        }
+    }
+
+    return $request->all();
 }

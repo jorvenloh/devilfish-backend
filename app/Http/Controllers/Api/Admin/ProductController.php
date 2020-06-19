@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\Http\Resources\ProductResource;
 use App\Http\Requests\ProductRequest;
-use App\Enumerations\Product\Status as ProductStatus;
 
 class ProductController extends Controller
 {
@@ -18,11 +17,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $sorter = collect($request->sorter);
-
-        $products = Product::filtered($request->filters)->orderBy($sorter->get('target'), $sorter->get('order'))->paginate(21);
-
-        return ProductResource::collection($products)->additional(['current_filters' => processFilters($request)]);
+        //
     }
 
     /**
@@ -51,17 +46,9 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ProductRequest $request)
+    public function store(Request $request)
     {
-        $product = Product::create([
-            'title' => $request->title,
-            'type' => $request->type,
-            'status' => ProductStatus::SAVED
-        ]);
-
-        \Log::info(__Method__ . ' @ Admin #' . $request->user()->id . '. has created product #' . $product->id);
-
-        return response()->json(['product' => new ProductResource($product)], 200);
+        //
     }
 
     /**
@@ -72,10 +59,7 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        $product->load('videos');
-        $product->load('images');
-        $product->load('crews');
-        $product->load('tags');
+        //$$product->load('videos');
 
         return new ProductResource($product);
     }

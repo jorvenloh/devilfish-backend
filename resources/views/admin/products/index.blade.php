@@ -16,7 +16,7 @@
 
 @section('content')
 <div class="container">
-    <products-index status="{{$status}}"></products-index>
+    Product Index
 </div>
 @endsection
 

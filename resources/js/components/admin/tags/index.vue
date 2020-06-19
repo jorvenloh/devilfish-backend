@@ -129,14 +129,13 @@ export default {
     },
     computed: {
         filteredItems() {
-            let filtered_items = [];
-            if (this.notEmptyObject(this.current_filters)) {
-                const { name } = this.current_filters;
+            if (this.current_filters.filters) {
+                const { name } = this.current_filters.filters;
                 let filtered_items = [];
                 if (name) filtered_items.push(name);
                 return filtered_items;
             }
-            return filtered_items;
+            return [];
         }
     },
     methods: {
