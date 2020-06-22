@@ -39,15 +39,19 @@ trait ImageTrait
      */
     public function getURLPath()
     {
-        if(!$this->uuid) return null;
+        if (!$this->uuid) return null;
 
         switch ($this->imageable_type) {
             case 'App\Crew':
-                $storagePath = 'images/crews/'.$this->imageable_id.'/'. $this->uuid;
+                $storagePath = 'images/crews/' . $this->imageable_id . '/' . $this->uuid;
+                break;
+
+            case 'App\Product':
+                $storagePath = 'images/products/' . $this->imageable_id . '/' . $this->uuid;
                 break;
 
             default:
-                $storagePath = 'images/'. $this->uuid;
+                $storagePath = 'images/' . $this->uuid;
                 break;
         }
 
@@ -56,4 +60,41 @@ trait ImageTrait
         return $url;
     }
 
+    /**
+     * Get the url path to the file in disk.
+     *
+     * @return  string
+     */
+    public function getDiskPath()
+    {
+        switch ($this->imageable_type) {
+            case 'App\Crew':
+                $disk = 'images_crews';
+                break;
+
+            case 'App\Product':
+                $disk = 'images_products';
+                break;
+
+            default:
+                $disk = 'local';
+                break;
+        }
+
+        $filePath = Storage::disk($disk)->getDriver()->getAdapter()->getPathPrefix();
+
+        return $filePath;
+    }
+
+    /**
+     * Get the url path to the file in disk.
+     *
+     * @return  string
+     */
+    public function deleteFileInDisk($parent_id)
+    {
+        $filePath = $this->getDiskPath() . $parent_id . '/' . $this->uuid;
+        if (file_exists($filePath))
+            unlink($filePath);
+    }
 }

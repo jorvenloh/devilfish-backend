@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Profile</h3>
-                    <div class="card-tools">
+                    <div class="card-tools" v-if="notEmptyObject(product)">
                         <button
                             class="btn btn-tool"
                             type="button"
@@ -16,9 +16,16 @@
                             <i class="fas fa-fw fa-ellipsis-v" aria-hidden="true"></i>
                         </button>
                         <div
-                            class="dropdown-menu dropdown-menu-right"
+                            class="dropdown-menu dropdown-menu-right text-capitalize"
                             aria-labelledby="dropdownMenuButton"
                         >
+                            <a class="dropdown-item" href="#" @click="updateTitle()">Edit Title</a>
+                            <a
+                                class="dropdown-item"
+                                href="#"
+                                @click="updateStatus()"
+                            >{{ actionStatus == 'published' ? 'publish' : 'unstage'}} Product</a>
+                            <div class="dropdown-divider"></div>
                             <a
                                 class="dropdown-item text-danger"
                                 href="#"
@@ -31,11 +38,12 @@
                     </div>
                 </div>
                 <div class="card-body">
-
-                    <v-image-selector v-on:upload-image="postUploadPoster">
-                        <template #header>
-                            Upload Poster
-                        </template>
+                    <v-image-selector
+                        v-on:upload-image="postUploadPoster"
+                        ref="imageSelector"
+                        :display_image_url="product.poster"
+                    >
+                        <template #header>Upload Poster</template>
                     </v-image-selector>
 
                     <dl class="row text-capitalize m-0">
@@ -49,7 +57,10 @@
                         </dd>
                         <dt class="col-sm-4">Status</dt>
                         <dd class="col-sm-8">
-                            <span class="float-sm-right">{{product.status}}</span>
+                            <span
+                                class="float-sm-right status"
+                                :class="'status__'+product.status"
+                            >{{product.status}}</span>
                         </dd>
                         <dt class="col-sm-4">Created At</dt>
                         <dd class="col-sm-8">
@@ -144,6 +155,13 @@ export default {
             errors: []
         };
     },
+    computed: {
+        actionStatus() {
+            if (this.product.status == "published") return "unstaged";
+            if (this.product.status == "saved") return "published";
+            if (this.product.status == "unstaged") return "published";
+        }
+    },
     mounted() {
         this.getProduct();
     },
@@ -170,6 +188,23 @@ export default {
             this.crews = crews;
             this.tags = tags;
         },
+        patchProduct(payload) {
+            this.loading = true;
+            this.confirm(() => {
+                axios
+                    .patch(`admin/products/${this.product_id}`, payload)
+                    .then(response => {
+                        this.alertSuccess();
+                        this.product = response.data;
+                    })
+                    .catch(error => {
+                        this.alertError();
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+            });
+        },
         confirmDeleteProduct() {
             this.confirm(
                 () => {
@@ -177,6 +212,23 @@ export default {
                 },
                 { text: "Delete this profile?" }
             );
+        },
+        async updateTitle() {
+            const { value: editedTitle } = await this.$swal.fire({
+                title: "Edit Title",
+                input: "text",
+                confirmButtonText: "Save",
+                showCloseButton: true,
+                showCancelButton: true,
+                inputValue: this.product.title
+            });
+            if (editedTitle) {
+                this.patchProduct({ title: editedTitle.trim() });
+            }
+        },
+        updateStatus() {
+            const data = { status: this.actionStatus };
+            this.patchProduct(data);
         },
         deleteProduct() {
             this.loading = true;
@@ -218,13 +270,39 @@ export default {
         syncTags(tags) {
             this.postTags({ sync_tags: tags });
         },
-        postUploadPoster(file){
-            console.log('Post upload image');
-            console.log(file);
+        postUploadPoster(file) {
+            this.loading = true;
+            this.errors = [];
+            const data = new FormData();
+            if (file) data.append("poster", file);
+            axios
+                .post(`admin/products/${this.product_id}/images`, data)
+                .then(response => {
+                    this.product.poster = response.data.poster;
+                    this.$refs.imageSelector.uploadSuccess();
+                })
+                .catch(error => {
+                    this.$refs.imageSelector.handleError(
+                        error.response.data.errors.poster[0]
+                    );
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
         }
     }
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import "resources/sass/_variables";
+.status__saved {
+    color: $green;
+}
+.status__published {
+    color: $blue;
+}
+.status__unstaged {
+    color: $red;
+}
 </style>

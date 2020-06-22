@@ -6,10 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Filters\ProductFilter;
 use App\Enumerations\Image\Type as ImageType;
+use App\Traits\ProductTrait;
 
 class Product extends Model
 {
-    use SoftDeletes, ProductFilter;
+    use SoftDeletes, ProductFilter, ProductTrait;
 
     protected $guarded = [];
 
@@ -36,7 +37,7 @@ class Product extends Model
 
     public function poster()
     {
-        return $this->morphMany('App\Image', 'imageable')->where('type', ImageType::POSTER)->first();
+        return $this->morphMany('App\Image', 'imageable')->where('type', ImageType::POSTER)->latest()->first();
     }
 
     public function tags()

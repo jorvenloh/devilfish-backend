@@ -153,7 +153,7 @@ export default {
         },
         async editName() {
             const { value: editedName } = await this.$swal.fire({
-                title: "Edit Nmae",
+                title: "Edit Name",
                 input: "text",
                 confirmButtonText: "Save",
                 showCloseButton: true,

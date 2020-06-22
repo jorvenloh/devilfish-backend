@@ -1,23 +1,27 @@
 <template>
     <div class="d-block mb-2">
         <div class="container-selector">
-            <img
-                class="input-image-uploaded"
-                src="/images/placeholders/200x250.jpg"
-                alt="upload image"
-                width="200"
-                height="250"
-                @click="showUploadImageModal()"
-            />
-        </div>
-        <div class="row">
-            <div class="col">
+            <div
+                :class="{ bg__blurred: display_image_url }"
+                :style="{ backgroundImage: `url(${display_image_url})` }"
+            ></div>
+            <div class="uploaded-content">
+                <img
+                    class="image-uploaded"
+                    :src="display_image_url ? display_image_url : '/images/placeholders/200x250.jpg'"
+                    alt="upload image"
+                    width="200"
+                    height="250"
+                    @click="showUploadImageModal()"
+                />
                 <button
                     type="button"
-                    class="btn btn-primary float-right"
+                    class="btn btn-light btn-image-upload"
                     data-toggle="modal"
                     data-target="#uploadImageModal"
-                >Upload</button>
+                >
+                    <i class="fas fa-fw fa-upload" aria-hidden="true"></i>Upload
+                </button>
             </div>
         </div>
 
@@ -73,13 +77,12 @@
                                     >Cancel</button>
                                 </div>
                             </div>
-                            <small
-                                class="form-text text-muted"
+                            <small class="form-text text-muted"
                             >Recommend using image files of less than 100 KB</small>
                             <span
-                                v-if="errors.image"
+                                v-if="error_message"
                                 class="help-block text-danger d-block"
-                            >{{ errors.image[0] }}</span>
+                            >{{ error_message }}</span>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -98,11 +101,16 @@
 
 <script>
 export default {
-    props: {},
+    props: {
+        display_image_url: {
+            type: String,
+            default: ""
+        }
+    },
     data() {
         return {
             form: {},
-            errors: [],
+            error_message: '',
             file_name: null
         };
     },
@@ -128,8 +136,18 @@ export default {
         },
         confirmUploadImage() {
             this.confirm(() => {
-                this.$emit("upload-image", this.form);
+                this.$emit("upload-image", this.form.image);
             });
+        },
+        uploadSuccess() {
+            this.alertSuccess();
+            this.clearImageFile();
+            $("#uploadImageModal").modal("hide");
+        },
+        handleError(errors) {
+            if (errors) {
+                this.error_message = errors;
+            }
         }
     }
 };
@@ -140,5 +158,43 @@ export default {
     width: 100%;
     text-align: center;
     background-color: #bfbfbf;
+    position: relative;
+    overflow: hidden;
+}
+.input-group > .custom-file {
+    overflow: hidden;
+}
+.btn-image-upload {
+    opacity: 0;
+    position: absolute;
+    left: 50%;
+    margin-left: -48.5px;
+    top: 50%;
+    margin-top: -19px;
+    transition: 0.3s;
+}
+.image-uploaded {
+    cursor: pointer;
+}
+.image-uploaded:hover + .btn-image-upload,
+.btn-image-upload:hover {
+    opacity: 100;
+}
+.bg__blurred {
+    background-size: cover;
+    display: block;
+    background-position: center;
+    background-size: inherit;
+    filter: blur(5px);
+    -webkit-filter: blur(5px);
+    height: 800px;
+    left: 0;
+    position: absolute;
+    right: 0;
+    z-index: 1;
+}
+.uploaded-content {
+    position: relative;
+    z-index: 4;
 }
 </style>

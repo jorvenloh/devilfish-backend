@@ -87,9 +87,14 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Product $product)
     {
-        //
+        $newInputs = [];
+        if ($request->has('title')) $newInputs['title'] = $request->title;
+        if ($request->has('status')) $newInputs['status'] = $request->status;
+        if(!empty($newInputs)) $product->update($newInputs);
+
+        return response()->json(new ProductResource($product), 200);
     }
 
     /**

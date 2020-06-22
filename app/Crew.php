@@ -37,7 +37,7 @@ class Crew extends Model
 
     public function avatar()
     {
-        return $this->morphMany('App\Image', 'imageable')->where('type', ImageType::AVATAR)->first();
+        return $this->morphMany('App\Image', 'imageable')->where('type', ImageType::AVATAR)->latest()->first();
     }
 
     public function tags()
