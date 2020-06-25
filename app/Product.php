@@ -47,7 +47,7 @@ class Product extends Model
 
     public function crews()
     {
-        return $this->belongsToMany('App\Crew', 'product_crew');
+        return $this->belongsToMany('App\Crew', 'product_crew')->withPivot('role');;
     }
 
     // public function discussions()

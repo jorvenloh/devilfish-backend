@@ -1,14 +1,13 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Enumerations\Crew\Role;
 use Illuminate\Validation\Rule;
-use App\Enumerations\Product\Status as ProductStatus;
-use App\Enumerations\Product\Type as ProductType;
 use App\Product;
 
-class ProductRequest extends FormRequest
+class CrewRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,11 +18,9 @@ class ProductRequest extends FormRequest
     {
         switch ($this->method()) {
             case 'POST':
-            case 'PATCH':
             case 'DESTROY':
+            case 'PATCH':
                 return $this->user()->can('manage', Product::class);
-                break;
-
             default:
                 return true;
         }
@@ -37,24 +34,31 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         switch ($this->method()) {
-            case 'GET':
-                return ['status' => ['sometimes', 'nullable', Rule::in(ProductStatus::get())]];
-                break;
             case 'POST':
                 return [
-                    'title' => ['required', 'string', 'max:200', 'unique:App\Product,title'],
-                    'type' => ['required', 'string', Rule::in(ProductType::get())],
+                    'crew' => ['required', 'exists:App\Crew,id'],
+                    'role' => ['required', Rule::in(Role::get())],
                 ];
             case 'PATCH':
                 return [
-                    'title' => ['sometimes', 'required', 'string', 'max:200'],
-                    'status' => ['sometimes', 'required', Rule::in(ProductStatus::get())],
-                    'synopsis' => ['sometimes', 'nullable', 'min:50', 'max:4000']
+                    'role' => ['required', Rule::in(Role::get())],
                 ];
-                break;
-
             default:
                 return [];
         }
+    }
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            if ($this->ifExistedCrewRelation()) {
+                $validator->errors()->add('crew', 'This crew member is already existed with relationship '.$this->role);
+            }
+        });
+    }
+
+    public function ifExistedCrewRelation(){
+        $product = $this->route('product');
+        return $product->crews()->where('id', $this->crew)->wherePivot('role', $this->role)->exists();
     }
 }

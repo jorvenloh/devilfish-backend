@@ -3,10 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-use App\Http\Resources\ImageResource;
-use App\Http\Resources\CrewResource;
 use App\Http\Resources\TagResource;
-use App\Http\Resources\VideoResource;
 
 class ProductResource extends JsonResource
 {
@@ -39,9 +36,6 @@ class ProductResource extends JsonResource
     public function with($request)
     {
         return [
-            'videos' => VideoResource::collection($this->whenLoaded('videos')),
-            'images' => ImageResource::collection($this->whenLoaded('images')),
-            'crews' => CrewResource::collection($this->whenLoaded('crews')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
         ];
     }

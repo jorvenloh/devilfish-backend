@@ -1,31 +1,44 @@
-.bg-theme-green{
+.bg-theme-green {
     background-color: $theme-background;
     color: white;
 }
-.bg-theme-brown{
+
+.bg-theme-brown {
     background-color: $theme-brown;
     color: white;
 }
-.text-theme-green{
+
+.text-theme-green {
     color: $theme-background;
 }
-.text-theme-brown{
+
+.text-theme-brown {
     color: $theme-brown;
 }
-.sidebar-dark-primary{
+
+.sidebar-dark-primary {
     background-color: $theme-background;
 }
-.btn-badge{
+
+.sidebar-dark-primary .nav-sidebar>.nav-item >.nav-link.active,
+.sidebar-light-primary .nav-sidebar>.nav-item >.nav-link.active {
+    background-color: $theme-brown;
+}
+
+.btn-badge {
     min-width: 60px;
     border-radius: 3rem;
     cursor: unset !important;
 }
-.btn-badge + .btn-badge{
+
+.btn-badge+.btn-badge {
     margin-left: 0.5rem;
 }
-pre{
-    white-space: pre-line!important;
+
+pre {
+    white-space: pre-line !important;
 }
-.status{
+
+.status {
     font-weight: 700;
 }

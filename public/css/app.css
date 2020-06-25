@@ -6093,6 +6093,11 @@ readers do not read off random characters that represent icons */
   background-color: #0D2429;
 }
 
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active,
+.sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+  background-color: #E1B382;
+}
+
 .btn-badge {
   min-width: 60px;
   border-radius: 3rem;

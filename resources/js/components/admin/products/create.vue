@@ -46,7 +46,7 @@ export default {
     data() {
         return {
             form: {
-                title: "New shit",
+                title: "",
                 type: "movie"
             },
             errors: []

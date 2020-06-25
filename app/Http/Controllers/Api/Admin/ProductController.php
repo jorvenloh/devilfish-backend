@@ -70,12 +70,9 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show($id)
     {
-        $product->load('videos');
-        $product->load('images');
-        $product->load('crews');
-        $product->load('tags');
+        $product = Product::where('id', $id)->with(['videos', 'tags'])->firstOrFail();
 
         return new ProductResource($product);
     }
@@ -87,12 +84,13 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
         $newInputs = [];
         if ($request->has('title')) $newInputs['title'] = $request->title;
         if ($request->has('status')) $newInputs['status'] = $request->status;
-        if(!empty($newInputs)) $product->update($newInputs);
+        if ($request->has('synopsis')) $newInputs['synopsis'] = $request->synopsis;
+        if (!empty($newInputs)) $product->update($newInputs);
 
         return response()->json(new ProductResource($product), 200);
     }

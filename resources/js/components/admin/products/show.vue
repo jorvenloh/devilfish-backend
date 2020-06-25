@@ -112,17 +112,85 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div class="tab-content">
-                        <div class="tab-pane active" id="synopsis">Synopsis</div>
+                        <div class="tab-pane active" id="synopsis">
+                            <div v-show="!is_editing_synopsys">
+                                <div
+                                    class="tab-content-synopsys"
+                                    v-if="product.synopsis"
+                                >{{product.synopsis}}</div>
+                                <div v-else class="text-center p-3">
+                                    <span class="text-muted">
+                                        <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                                        No synopsis found
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div v-show="is_editing_synopsys" class="form-group">
+                                <textarea
+                                    class="form-control"
+                                    rows="15"
+                                    placeholder="Briefly describe this product..."
+                                    v-model="form.synopsis"
+                                    :class="{'is-invalid': errors.synopsis }"
+                                ></textarea>
+                                <span
+                                    v-if="errors.synopsis"
+                                    class="help-block text-danger d-block"
+                                >{{ errors.synopsis[0] }}</span>
+                            </div>
+
+                            <div class="row">
+                                <div class="col">
+                                    <button
+                                        v-show="!is_editing_synopsys"
+                                        class="btn btn-primary float-right"
+                                        @click="editSynopsis()"
+                                    >
+                                        <i class="fas fa-fw fa-edit mr-1" aria-hidden="true"></i>Edit
+                                    </button>
+
+                                    <div v-show="is_editing_synopsys">
+                                        <button
+                                            class="btn btn-success float-right"
+                                            @click="saveSynopsis()"
+                                        >
+                                            <i class="fas fa-fw fa-check mr-1" aria-hidden="true"></i>Save
+                                        </button>
+                                        <button
+                                            class="btn btn-default float-right mr-2"
+                                            @click="() => { is_editing_synopsys = false }"
+                                        >
+                                            <i class="fas fa-fw fa-times mr-1" aria-hidden="true"></i>Cancel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- /.tab-pane -->
                         <div class="tab-pane" id="videos">Videos</div>
                         <!-- /.tab-pane -->
-                        <div class="tab-pane" id="crews">Crews</div>
+                        <div class="tab-pane" id="crews">
+                            <crewsPane :product_id="product_id"></crewsPane>
+                        </div>
                         <!-- /.tab-pane -->
-                        <div class="tab-pane" id="images">Images</div>
+                        <div class="tab-pane" id="images">
+                            <imagesPane ref="imagesPane" :product_id="product_id"></imagesPane>
+                        </div>
                         <!-- /.tab-pane -->
-                        <div class="tab-pane" id="reviews">Reviews</div>
+                        <div class="tab-pane" id="reviews">
+                            <span class="d-block text-muted text-center">
+                                <i class="fas fa-comment-alt" aria-hidden="true"></i>
+                                Reviews (Feature Coming Soon)
+                            </span>
+                        </div>
                         <!-- /.tab-pane -->
-                        <div class="tab-pane" id="discussions">Discussion</div>
+                        <div class="tab-pane" id="discussions">
+                            <span class="d-block text-muted text-center">
+                                <i class="fas fa-comments" aria-hidden="true"></i>
+                                Discussions (Feature Coming Soon)
+                            </span>
+                        </div>
                         <!-- /.tab-pane -->
                     </div>
                     <!-- /.tab-content -->
@@ -134,7 +202,14 @@
 </template>
 
 <script>
+import crewsPane from "@/components/admin/products/crewsPane";
+import imagesPane from "@/components/admin/products/imagesPane";
+
 export default {
+    components: {
+        crewsPane,
+        imagesPane
+    },
     props: {
         product_id: {
             type: Number,
@@ -146,8 +221,6 @@ export default {
             loading: false,
             product: {},
             videos: [],
-            images: [],
-            crews: [],
             tags: [],
             loading_tags: false,
             is_editing_synopsys: false,
@@ -181,28 +254,30 @@ export default {
                 });
         },
         reconstructItems(response) {
-            let { data, videos, images, crews, tags } = response;
+            let { data, videos, tags } = response;
             this.product = data;
             this.videos = videos;
-            this.images = images;
-            this.crews = crews;
             this.tags = tags;
         },
-        patchProduct(payload) {
+        async patchProduct(payload) {
             this.loading = true;
-            this.confirm(() => {
-                axios
-                    .patch(`admin/products/${this.product_id}`, payload)
-                    .then(response => {
-                        this.alertSuccess();
-                        this.product = response.data;
-                    })
-                    .catch(error => {
-                        this.alertError();
-                    })
-                    .finally(() => {
-                        this.loading = false;
-                    });
+            return new Promise((resolve, reject) => {
+                this.confirm(() => {
+                    axios
+                        .patch(`admin/products/${this.product_id}`, payload)
+                        .then(response => {
+                            this.alertSuccess();
+                            this.product = response.data;
+                            resolve();
+                        })
+                        .catch(error => {
+                            this.alertError();
+                            reject(error.response);
+                        })
+                        .finally(() => {
+                            this.loading = false;
+                        });
+                });
             });
         },
         confirmDeleteProduct() {
@@ -274,12 +349,16 @@ export default {
             this.loading = true;
             this.errors = [];
             const data = new FormData();
-            if (file) data.append("poster", file);
+            if (file) {
+                data.append("image", file);
+                data.append("type", 'poster');
+            }
             axios
                 .post(`admin/products/${this.product_id}/images`, data)
                 .then(response => {
-                    this.product.poster = response.data.poster;
+                    this.product.poster = response.data.image;
                     this.$refs.imageSelector.uploadSuccess();
+                    this.$refs.imagesPane.getImages()
                 })
                 .catch(error => {
                     this.$refs.imageSelector.handleError(
@@ -288,6 +367,22 @@ export default {
                 })
                 .finally(() => {
                     this.loading = false;
+                });
+        },
+        editSynopsis() {
+            this.is_editing_synopsys = true;
+            this.form.synopsis = this.product.synopsis;
+        },
+        saveSynopsis() {
+            this.errors = [];
+            this.patchProduct({
+                synopsis: this.form.synopsis
+            })
+                .then(() => {
+                    this.is_editing_synopsys = false;
+                })
+                .catch(error => {
+                    if (error.data.errors) this.errors = error.data.errors;
                 });
         }
     }

@@ -18,16 +18,19 @@
         <div class="card-body">
             <div class="mb-3" v-if="sortedTags.length">
                 <div v-if="!is_editing_tags">
-                    <h4 class="d-inline mr-2" :key="index" v-for="(item, index) in sortedTags">
-                        <span class="badge badge-light text-primary">#{{item.name}}</span>
-                    </h4>
+                    <button
+                        class="btn btn-tag btn-light text-primary mr-2"
+                        :key="index"
+                        v-for="(item, index) in sortedTags"
+                        @click="nagivateTag(item.id)"
+                    >#{{item.name}}</button>
                 </div>
                 <div v-else>
                     <div class="d-inline">
                         <button
                             :key="index"
                             v-for="(item, index) in form.sync_tags"
-                            class="btn btn-sm btn-danger mr-2 mb-2"
+                            class="btn btn-tag btn-outline-danger mr-2 mb-2"
                             @click="removeTags(index)"
                         >
                             #{{item.name}}
@@ -67,7 +70,7 @@
 </template>
 
 <script>
-//import vTagInput  from '@/components/vTagsCard'
+//import vTagInput from '@/components/vTagsInput'
 export default {
     props: {
         tags: {
@@ -111,10 +114,16 @@ export default {
         },
         removeTags(index) {
             this.form.sync_tags.splice(index, 1);
+        },
+        nagivateTag(tag_id) {
+            window.open(process.env.MIX_APP_URL + `/admin/tags/${tag_id}`, '_blank')
         }
     }
 };
 </script>
 
-<style>
+<style scoped>
+.btn-tag {
+    font-weight: 700;
+}
 </style>

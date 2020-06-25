@@ -17,7 +17,7 @@
                         <div class="dropdown-menu dropdown-menu-right">
                             <button class="dropdown-item" type="button" @click="sortByTitle('asc')">
                                 <i class="fas fa-sort-alpha-down" aria-hidden="true"></i>
-                                Alphabetical order A-Z
+                                Title (A-Z)
                             </button>
                             <button
                                 class="dropdown-item"
@@ -25,7 +25,7 @@
                                 @click="sortByTitle('desc')"
                             >
                                 <i class="fas fa-sort-alpha-down-alt" aria-hidden="true"></i>
-                                Alphabetical order Z-A
+                                Title (Z-A)
                             </button>
                         </div>
                     </div>

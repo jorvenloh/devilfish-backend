@@ -3,6 +3,9 @@
 namespace App\Http\Requests\Product;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Product;
+use Illuminate\Validation\Rule;
+use App\Enumerations\Image\Type as ImageType;
 
 class ImageRequest extends FormRequest
 {
@@ -13,7 +16,15 @@ class ImageRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        switch ($this->method()) {
+            case 'POST':
+            case 'DESTROY':
+            case 'PATCH':
+                return $this->user()->can('manage', Product::class);
+
+            default:
+                return true;
+        }
     }
 
     /**
@@ -23,8 +34,14 @@ class ImageRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'poster' => ['required', 'image', 'max:300']
-        ];
+        switch ($this->method()) {
+            case 'POST':
+                return [
+                    'image' => ['required', 'image', 'max:1024'],
+                    'type' => ['required', Rule::in(ImageType::get())],
+                ];
+            default:
+                return [];
+        }
     }
 }

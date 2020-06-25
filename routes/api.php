@@ -61,8 +61,10 @@ Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function(){
         Route::get('products/options', 'Api\Admin\ProductController@selectOptions')->name('products.options');
         Route::resource('products', 'Api\Admin\ProductController', ['except' => ['create', 'edit']]);
         Route::group(['prefix' => 'products/{product}', 'as' => 'products.{product}.'], function () {
-            Route::resource('images', 'Api\Admin\Product\ImageController', ['except' => ['create', 'edit']]);
+            Route::resource('images', 'Api\Admin\Product\ImageController', ['except' => ['edit']]);
             Route::resource('tags', 'Api\Admin\Product\TagController', ['only' => ['store']]);
+            Route::get('crews/roles', 'Api\Admin\Product\CrewController@roleOptions')->name('crews.roles.options');
+            Route::resource('crews', 'Api\Admin\Product\CrewController', ['only' => ['index', 'store', 'update', 'destroy']]);
         });
 
         //Tags

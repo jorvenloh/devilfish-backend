@@ -41,21 +41,9 @@ class ProductPolicy
         return $user->isSuperAdmin() ? true : $this->isPrivilegeHolder($user);
     }
 
-    /**
-     * Check if user can delete this article
-     * YES only if user is superadmin, or product manager
-     *
-     * @param  \App\User $user
-     * @return  boolean
-     */
-    public function delete(User $user)
-    {
-        return $user->isSuperAdmin() ? true : ($this->isPrivilegeHolder($user));
-    }
-
     public function isPrivilegeHolder(User $user)
     {
-        return $user->hasPrivileges(PrivilegesEnum::ARTICLE_MANAGER);
+        return $user->hasPrivileges(PrivilegesEnum::PRODUCT_MANAGER);
     }
 
 }

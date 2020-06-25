@@ -13,7 +13,7 @@ class PrivilegesSeeder extends Seeder
     public function run()
     {
         $privileges_preset = [
-            ['name' => 'Video Manager', 'description' => 'Manage all video instances in the system, which including creation, update, delete, and posting'],
+            ['name' => 'Product Manager', 'description' => 'Manage all products instances in the system, which including creation, update, delete, posting, and many more related actions'],
             ['name' => 'Article Manager', 'description' => 'Manage all article instances in the system, which including creation, update, delete, and posting'],
             ['name' => 'User Manager', 'description' => 'Manage all user instances in the system, which including suspense, release, revoke comment/posting privileges'],
             ['name' => 'Payment Manager', 'description' => 'Manage all payment instances in the system, which including verifying payment']

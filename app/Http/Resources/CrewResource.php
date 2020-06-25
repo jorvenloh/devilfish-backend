@@ -25,6 +25,9 @@ class CrewResource extends JsonResource
             'images' => ImageResource::collection($this->whenLoaded('images')),
             'products' => ProductResource::collection($this->whenLoaded('products')),
             'tags' => TagResource::collection($this->whenLoaded('tags')),
+            'role' => $this->whenPivotLoaded('product_crew', function () {
+                return $this->pivot->role;
+            }),
         ];
     }
 }

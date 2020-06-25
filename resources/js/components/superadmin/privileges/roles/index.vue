@@ -61,6 +61,9 @@
 import AssignRole from "@/components/superadmin/privileges/roles/assignRole";
 
 export default {
+    components:{
+        AssignRole
+    },
     props: {
         privilege_id: {
             type: Number,

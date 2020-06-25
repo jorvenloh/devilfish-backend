@@ -2,6 +2,7 @@
     <div class="d-block mb-2">
         <div class="container-selector">
             <div
+                v-if="display_image_url"
                 :class="{ bg__blurred: display_image_url }"
                 :style="{ backgroundImage: `url(${display_image_url})` }"
             ></div>

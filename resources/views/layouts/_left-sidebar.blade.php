@@ -13,15 +13,15 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="/admin/home" class="nav-link {{ (request()->is('admin/home')) ? 'active' : '' }}">
+                    <a href="/admin/dashboard" class="nav-link {{ (request()->is('admin/dashboard*')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-chart-bar"></i>
                         <p>
                             Dashboard
                         </p>
                     </a>
                 </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                <li class="nav-item has-treeview {{ (request()->is('admin/articles*')) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ (request()->is('admin/articles*')) ? 'active' : '' }}">
                         <i class="nav-icon far fa-newspaper"></i>
                         <p>
                             Articles
@@ -49,8 +49,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                <li class="nav-item has-treeview {{ (request()->is('admin/products*')) ? 'menu-open' : '' }}">
+                    <a href="#" class="nav-link {{ (request()->is('admin/products*')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-film"></i>
                         <p>
                             Products
@@ -65,6 +65,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="/admin/products" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>All</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="/admin/products?status=saved" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Saved</p>
@@ -76,10 +82,16 @@
                                 <p>Published</p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="/admin/products?status=unstaged" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Unstaged</p>
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link {{ (request()->is('admin/users*')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Users
