@@ -70,6 +70,11 @@ Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function(){
         //Tags
         Route::get('tags/options', 'Api\Admin\TagController@selectOptions')->name('tags.options');
         Route::resource('tags', 'Api\Admin\TagController', ['only' => ['index', 'show']]);
+
+        //Dashboard
+        Route::get('dashboard/users', 'Api\Admin\DashboardController@usersData');
+        Route::get('dashboard/products', 'Api\Admin\DashboardController@productsData');
+        Route::get('dashboard/articles', 'Api\Admin\DashboardController@articlesData');
     });
 
     //Superadmin

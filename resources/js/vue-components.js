@@ -122,3 +122,8 @@ Vue.component(
     'tags-show',
     require('./components/admin/tags/show.vue').default
 );
+
+Vue.component(
+    'dashboard-index',
+    require('./components/admin/dashboard/index.vue').default
+);
