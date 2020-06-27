@@ -31,17 +31,20 @@ class ArticleController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ArticleRequest $request)
     {
         $article = Article::create([
             'title' => $request->title,
-            'body' => json_encode($request->body),
-            'status' => ArticleStatus::SAVED]
-        );
+            'body' => $request->body,
+            'status' => ArticleStatus::SAVED
+        ]);
 
         $article->author()->associate($request->user())->save();
 
-        return $article ? response()->json(['success' => true], 200) : response()->json(['success' => false], 500);
+        return $article ? response()->json([
+            'success' => true,
+            'article' => new ArticleResource($article)
+        ], 200) : response()->json(['success' => false], 500);
     }
 
     /**
@@ -50,10 +53,8 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Article $article)
+    public function show(ArticleRequest $request, Article $article)
     {
-        $this->authorize('show', Article::class);
-
         $article->load('author');
 
         return new ArticleResource($article);
@@ -66,9 +67,15 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(ArticleRequest $request, Article $article)
     {
-        //
+        $newInputs = [];
+        if ($request->has('title')) $newInputs['title'] = $request->title;
+        if ($request->has('body')) $newInputs['body'] = $request->body;
+        if ($request->has('status')) $newInputs['status'] = $request->status;
+        if (!empty($newInputs)) $article->update($newInputs);
+
+        return response()->json(['success' => true, 'article' => new ArticleResource($article)], 200);
     }
 
     /**
@@ -77,8 +84,12 @@ class ArticleController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(ArticleRequest $request, Article $article)
     {
-        //
+        $article->delete();
+
+        \Log::info(__METHOD__ . ' @ Article (' . $article->title . ') is deleted by admin #' . $request->user()->id . '.');
+
+        return response()->json([], 200);
     }
 }

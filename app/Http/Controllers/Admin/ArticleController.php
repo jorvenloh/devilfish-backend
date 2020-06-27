@@ -28,7 +28,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Article::class);
+        $this->authorize('manage', Article::class);
 
         return view('admin.articles.create');
     }
@@ -54,7 +54,7 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        // $this->authorize('edit', $article);
+        $this->authorize('manage', $article);
 
         return view('admin.articles.edit');
     }

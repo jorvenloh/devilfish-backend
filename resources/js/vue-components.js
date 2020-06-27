@@ -64,21 +64,6 @@ Vue.component(
 );
 
 Vue.component(
-    'articles-create',
-    require('./components/admin/articles/create.vue').default
-);
-
-Vue.component(
-    'articles-index',
-    require('./components/admin/articles/index.vue').default
-);
-
-Vue.component(
-    'articles-show',
-    require('./components/admin/articles/show.vue').default
-);
-
-Vue.component(
     'products-create',
     require('./components/admin/products/create.vue').default
 );

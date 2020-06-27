@@ -36,20 +36,9 @@ class ArticlePolicy
      * @param  \App\User $user
      * @return  boolean
      */
-    public function create(User $user)
+    public function manage(User $user)
     {
-        return $user->isSuperAdmin() ? true : $this->isPrivilegeHolder($user) ;
-    }
-
-    /**
-     * Check if user can edit this article
-     * YES only if user is superadmin, or article manager, or article author
-     * @param  \App\User $user
-     * @return  boolean
-     */
-    public function edit(User $user, Article $article)
-    {
-        return $user->isSuperAdmin() ? true : ($this->isPrivilegeHolder($user) ? true : $this->isArticleAuthor($user, $article)) ;
+        return $user->isSuperAdmin() ? true : $this->isPrivilegeHolder($user);
     }
 
     /**

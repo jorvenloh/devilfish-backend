@@ -23,6 +23,19 @@
 @section('content')
 
 <div class="container">
+
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">
+                <i class="far fa-file-alt"></i>
+                Content
+            </h3>
+        </div>
+        <div class="card-body">
+            <div id="editorjs"></div>
+        </div>
+    </div>
+
     <articles-show article-id="{{ $article->id }}"></articles-show>
 </div>
 

@@ -123,10 +123,8 @@ class CrewController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Crew $crew)
+    public function destroy(CrewRequest $request, Crew $crew)
     {
-        $this->authorize('destroy', [Crew::class]);
-
         $crew->delete();
 
         \Log::info(__METHOD__ . ' @ Crew (' . $crew->name . ') is deleted by admin #' . $request->user()->id . '.');

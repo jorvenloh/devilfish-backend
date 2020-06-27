@@ -46,7 +46,7 @@ class CrewRequest extends FormRequest
                 break;
             case 'PATCH':
                 return [
-                    'name' => ['sometimes','string', 'max:200', 'unique:App\Crew,name,'.$this->route('api.admin.crews.update')],
+                    'name' => ['sometimes','string', 'max:200', 'unique:App\Crew,name,'.$this->route('crew')->id],
                     'description' => ['sometimes', 'required', 'max:5000'],
                 ];
 

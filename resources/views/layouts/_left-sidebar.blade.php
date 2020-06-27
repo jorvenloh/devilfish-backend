@@ -36,6 +36,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="/admin/articles" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>All</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="/admin/articles?status=saved" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Saved</p>

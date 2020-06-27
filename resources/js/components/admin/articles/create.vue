@@ -2,114 +2,102 @@
     <div>
         <div class="card">
             <div class="card-body">
-                <div class="row">
-                    <label for="title" class="col-sm-2 col-form-label font-weight-normal">
-                        <i class="fas fa-heading"></i>
-                        Title
-                    </label>
-                    <div class="col-sm-10">
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="title"
-                            placeholder="Untitled"
-                            v-model="article.title"
-                        />
-                    </div>
+                <div class="form-group">
+                    <label for="title">Title</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="title"
+                        placeholder="Untitled"
+                        v-model="form.title"
+                    />
+                    <span
+                        v-if="errors.title"
+                        class="help-block text-danger d-block"
+                    >{{ errors.title[0] }}</span>
                 </div>
             </div>
-        </div>
-
-        <div class="card">
-            <div class="card-header">
-                <h3 class="card-title">
-                    <i class="far fa-file-alt"></i>
-                    Content
-                </h3>
-            </div>
-            <div class="card-body">
-                <div id="editorjs"></div>
-            </div>
             <div class="card-footer text-right">
-                <button type="button" class="btn btn-success" @click="saveArticle()">
+                <button
+                    :disabled="loading"
+                    type="button"
+                    class="btn btn-success"
+                    @click="saveArticle()"
+                >
                     <i class="far fa-fw fa-save mr-1" aria-hidden="true"></i>Save
                 </button>
-            </div>
-        </div>
-
-        <div class="card mb-5">
-            <div class="card-header">
-                <i class="fas fa-code"></i>
-                Content Elements
-            </div>
-            <div class="card-body">
-                <dl class="row">
-                    <dt class="col-sm-2">Header</dt>
-                    <dd class="col-sm-10">'CTRL+SHIFT+H'</dd>
-                    <dt class="col-sm-2">
-                        Embed
-                        <i class="fab fa-youtube"></i>
-                    </dt>
-                    <dd class="col-sm-10">Paste the URL of the embed - Supported Youtube & Coub</dd>
-                    <dt class="col-sm-2">Embed Link</dt>
-                    <dd class="col-sm-10">'CTRL+SHIFT+A' - Insert links back to own products</dd>
-                    <dt class="col-sm-2">Simple Image</dt>
-                    <dd class="col-sm-10">Paste the URL of the image</dd>
-                    <dt class="col-sm-2">List</dt>
-                    <dd class="col-sm-10">'CMD+SHIFT+Q'</dd>
-                    <dt class="col-sm-2">Quote</dt>
-                    <dd class="col-sm-10">'CMD+SHIFT+O'</dd>
-                </dl>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-//import editor from "@/plugins/Editor";
+import editor from "@/plugins/Editor";
 
 export default {
     data() {
         return {
-            article: {
+            form: {
                 title: "",
                 body: ""
             },
-            loading: false
+            loading: false,
+            editor: {},
+            errors: []
         };
+    },
+    mounted() {
+        this.loading = true;
+        this.editor = editor();
+        this.editor.isReady
+            .then(() => {
+                this.loading = false;
+                console.log("Editor.js is ready to work!");
+            })
+            .catch(reason => {
+                console.log(
+                    `Editor.js initialization failed because of ${reason}`
+                );
+            });
     },
     methods: {
         saveArticle() {
-            editor
+            this.loading = true;
+            this.editor
                 .save()
                 .then(outputData => {
-                    this.article.body = outputData;
+                    this.form.body = outputData;
+                    console.log(outputData);
                     this.confirm(() => {
                         axios
-                            .post(`admin/articles`, this.article)
+                            .post(`admin/articles`, this.form)
                             .then(response => {
                                 this.alertSuccess();
-                                editor.clear();
                                 this.clearForm();
+                                this.navigate(
+                                    `/admin/articles/${response.data.article.id}`,
+                                    "_self"
+                                );
                             })
                             .catch(error => {
+                                console.log(error);
+                                this.errors = error.response.data.errors;
                                 this.alertError({}, error.response.data.errors);
                             });
                     });
                 })
                 .catch(error => {
+                    console.log("Mat 7", error);
                     console.log("Saving failed: ", error);
                 })
                 .finally(() => {
                     this.loading = false;
                 });
+        },
+        clearForm() {
+            this.editor.clear();
+            this.form = {};
         }
-    },
-    clearForm() {
-        this.article = {
-            title: "",
-            body: ""
-        };
     }
 };
 </script>

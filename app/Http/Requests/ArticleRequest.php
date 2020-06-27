@@ -18,11 +18,11 @@ class ArticleRequest extends FormRequest
     {
         switch ($this->method()) {
             case 'POST':
-                return $this->user()->can('store', Article::class);
+                return $this->user()->can('manage', Article::class);
                 break;
-
+            case 'DESTROY':
             case 'PATCH':
-                $article = Article::find($this->route('api.admin.articles.update'));
+                $article = $this->route('article');
                 return $article && $this->user()->can('update', $article);
 
             default:
@@ -42,10 +42,15 @@ class ArticleRequest extends FormRequest
                 return ['status' => ['sometimes', 'nullable', Rule::in(ArticleStatus::get())]];
                 break;
             case 'POST':
+                return [
+                    'title' => ['required', 'max:200'],
+                    'body' => ['required'],
+                ];
             case 'PATCH':
                 return [
-                    'title' => 'required|string',
-                    'body' => 'required',
+                    'title' => ['sometimes', 'required', 'max:200'],
+                    'body' => ['sometimes', 'required'],
+                    'status' => ['sometimes', 'required', Rule::in(ArticleStatus::get())]
                 ];
 
             default:

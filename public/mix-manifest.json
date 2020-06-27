@@ -1,4 +1,10 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/css/app.css": "/css/app.css",
+    "/article-create.js": "/article-create.js",
+    "/articles-index.js": "/articles-index.js",
+    "/articles-show.js": "/articles-show.js",
+    "/vendors~article-create~articles-show.js": "/vendors~article-create~articles-show.js",
+    "/vendors~articles-show.js": "/vendors~articles-show.js",
+    "/vendors~article-create.js": "/vendors~article-create.js"
 }

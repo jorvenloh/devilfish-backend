@@ -1,32 +1,63 @@
 <template>
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title" v-if="article.title">{{ article.title }}</h3>
+            <h3 class="card-title text-capitalize" v-if="article.title">
+                <span class="right badge badge-primary">{{article.status}}</span>
+                {{ article.title }}
+            </h3>
+            <button
+                type="button"
+                class="btn btn-tool position-absolute mb-1"
+                @click="updateTitle"
+                data-toggle="tooltip"
+                data-placement="right"
+                title="Edit Title"
+            >
+                <i class="fas fa-edit"></i>
+            </button>
             <div class="card-tools">
+                <div class="d-inline text-secondary" v-if="article.author">
+                    <span
+                        data-toggle="tooltip"
+                        data-placement="left"
+                        title="Author"
+                    >{{article.author.username}}</span>
+                </div>
                 <small class="text-secondary" v-if="article.body">
                     <i class="far fa-fw fa-clock"></i>
                     Last Update {{ article.updated_at | toStandardDateTime(true) }}
                 </small>
             </div>
         </div>
-        <div class="card-body">{{article.body}}</div>
         <div class="card-footer">
-            <div class="row">
-                <div class="col text-left">
-                    <div v-if="article.author">
-                        <span>Author: {{article.author.username}}</span>
-                    </div>
-                </div>
-                <div class="col text-right">
-                    <button type="button" class="btn btn-success mr-1" @click="publishArticle()">
-                        <i class="fas fa-share-square" aria-hidden="true"></i>
-                        Publish
-                    </button>
-                    <button type="button" class="btn btn-primary" @click="editArticle()">
-                        <i class="far fa-edit" aria-hidden="true"></i>
-                        Edit
-                    </button>
-                </div>
+            <button
+                :disabled="loading"
+                type="button"
+                class="btn btn-primary ml-2 float-right"
+                @click="saveArticle()"
+            >
+                <i class="far fa-fw fa-edit" aria-hidden="true"></i>
+                Save
+            </button>
+            <div v-if="article.status" class="d-inline float-right">
+                <button
+                    v-if="article.status == 'published'"
+                    type="button"
+                    class="btn btn-danger"
+                    @click="updateStatus('unstaged')"
+                >
+                    <i class="fas fa-fw fa-level-down-alt" aria-hidden="true"></i>
+                    Unstage
+                </button>
+                <button
+                    v-else
+                    type="button"
+                    class="btn btn-success"
+                    @click="updateStatus('published')"
+                >
+                    <i class="fas fa-fw fa-share-square" aria-hidden="true"></i>
+                    Publish
+                </button>
             </div>
         </div>
         <div class="overlay dark" v-if="loading">
@@ -36,6 +67,9 @@
 </template>
 
 <script>
+//import EditorJS from "@editorjs/editorjs";
+import editor from "@/plugins/Editor";
+
 export default {
     props: {
         articleId: {
@@ -46,20 +80,21 @@ export default {
     data() {
         return {
             loading: true,
-            article: {}
+            article: {},
+            editor: {}
         };
     },
     mounted() {
         this.getArticle();
     },
     methods: {
-        getArticle() {
+        async getArticle() {
             this.loading = true;
             axios
                 .get(`admin/articles/${this.articleId}`)
                 .then(response => {
-                    console.log(response);
                     this.article = response.data.data;
+                    this.setupEditor();
                 })
                 .catch(error => {
                     this.alertError({}, error.response.data.errors);
@@ -68,15 +103,67 @@ export default {
                     this.loading = false;
                 });
         },
-        publishArticle() {
-            console.log("Publish Artcle");
+        setupEditor() {
+            this.editor = editor({ data: this.article.body });
         },
-        editArticle() {
-            console.log("Edit Artcle");
+        updateStatus(status) {
+            this.confirm(() => {
+                this.patchArticle({ status: status });
+            });
+        },
+        async updateTitle() {
+            const { value: editedTitle } = await this.$swal.fire({
+                title: "Edit Title",
+                input: "text",
+                confirmButtonText: "Save",
+                showCloseButton: true,
+                showCancelButton: true,
+                inputValue: this.article.title
+            });
+            if (editedTitle) {
+                this.patchArticle({ title: editedTitle.trim() });
+            }
+        },
+        saveArticle() {
+            this.loading = true;
+            this.editor
+                .save()
+                .then(outputData => {
+                    this.confirm(() => {
+                        this.patchArticle({ body: outputData });
+                    });
+                })
+                .catch(error => {
+                    console.log("Saving failed: ", error);
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
+        },
+        async patchArticle(payload) {
+            this.loading = true;
+            this.makeApiRequest(
+                `admin/articles/${this.articleId}`,
+                "patch",
+                payload
+            )
+                .then(response => {
+                    this.article = response.data.article;
+                    this.alertSuccess();
+                })
+                .catch(error => {
+                    this.alertError();
+                })
+                .finally(() => {
+                    this.loading = false;
+                });
         }
     }
 };
 </script>
 
-<style>
+<style scoped>
+.btn-tool {
+    margin: -5px -0px;
+}
 </style>
