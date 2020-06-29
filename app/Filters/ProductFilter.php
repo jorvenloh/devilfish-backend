@@ -25,7 +25,6 @@ trait ProductFilter
             })
             ->where(function ($query) use ($filter) {
                 if ($filter->has('crew')) {
-
                     if (is_null($filter->get('crew')))
                         return null;
 
@@ -37,7 +36,6 @@ trait ProductFilter
             })
             ->where(function ($query) use ($filter) {
                 if ($filter->has('tag')) {
-
                     if (is_null($filter->get('tag')))
                         return null;
 

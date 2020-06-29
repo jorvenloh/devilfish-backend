@@ -45,8 +45,12 @@ Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function(){
     //Admin
     Route::group(['middleware' => 'verified', 'prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::resource('users', 'Api\Admin\UserController');
-        Route::resource('articles', 'Api\Admin\ArticleController', ['except' => ['create', 'edit']]);
         Route::resource('genres', 'Api\Admin\GenreController', ['except' => ['create', 'edit']]);
+
+        //Articles
+        Route::get('articles/options/status', 'Api\Admin\ArticleController@statusOptions')->name('products.options.status');
+        Route::get('articles/options/author', 'Api\Admin\ArticleController@authorOptions')->name('products.options.author');
+        Route::resource('articles', 'Api\Admin\ArticleController', ['except' => ['create', 'edit']]);
 
         //Crews
         Route::get('crews/options', 'Api\Admin\CrewController@selectOptions')->name('crews.options');

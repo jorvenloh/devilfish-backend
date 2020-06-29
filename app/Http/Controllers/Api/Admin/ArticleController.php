@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Article;
+use App\User;
 use App\Http\Resources\ArticleResource;
 use App\Http\Requests\ArticleRequest;
 use App\Enumerations\Article\Status as ArticleStatus;
@@ -18,11 +19,31 @@ class ArticleController extends Controller
      */
     public function index(ArticleRequest $request)
     {
-        $this->authorize('index', Article::class);
+        $sorter = collect($request->sorter);
 
-        $articles = Article::filtered($request)->paginate(config('system.default_pagination_number'));
+        $products = Article::filtered($request->filters)->orderBy($sorter->get('target'), $sorter->get('order'))->paginate(15);
 
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection($products)->additional(['current_filters' => processFilters($request)]);
+    }
+
+    public function statusOptions(Request $request)
+    {
+        return ArticleStatus::selectOptions();
+    }
+
+    public function authorOptions(Request $request)
+    {
+        $authors = User::whereHas('articles')->get();
+
+        $select_options = [];
+        foreach ($authors as $author) {
+            $select_options[] = [
+                'value' => $author->id,
+                'label' => $author->username,
+            ];
+        }
+
+        return $select_options;
     }
 
     /**
