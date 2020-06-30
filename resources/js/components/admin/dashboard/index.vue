@@ -1,12 +1,12 @@
 <template>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-md-4">
             <userCard></userCard>
         </div>
-        <div class="col-sm-4">
+        <div class="col-md-4">
             <productCard></productCard>
         </div>
-        <div class="col-sm-4">
+        <div class="col-md-4">
             <articleCard></articleCard>
         </div>
     </div>

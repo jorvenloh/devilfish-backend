@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Auth;
 
 Auth::routes(['verify' => true]);
 
-//Guest
 Route::middleware('guest')->group(function () {
     Route::get('/', function () {
         return view('welcome');
@@ -13,24 +12,29 @@ Route::middleware('guest')->group(function () {
 });
 
 //Auth
-Route::group(['middleware' => 'auth'], function(){
+Route::group(['middleware' => 'auth'], function () {
+
+    //Guest
+    Route::get('/guest/home', function () {
+        return view('guest.home');
+    })->name('guest.home');
 
     //AD/SA
-    Route::group(['prefix' => 'admin', 'middleware' => ['hasRole:SA;AD'], 'as' => 'admin.'], function(){
-        Route::get('/dashboard', 'Admin\DashboardController@index')->name('home');
+    Route::group(['prefix' => 'admin', 'middleware' => ['hasRole:SA;AD'], 'as' => 'admin.'], function () {
+        Route::get('/dashboard', 'Admin\DashboardController@index')->name('dashboard');
 
+        Route::resource('/users', 'Admin\UserController', ['only' => ['index', 'show']]);
         Route::resource('/articles', 'Admin\ArticleController', ['only' => ['index', 'show', 'create', 'edit']]);
         Route::resource('/products', 'Admin\ProductController', ['only' => ['index', 'show', 'create']]);
         Route::resource('/genres', 'Admin\GenreController', ['only' => ['index']]);
         Route::resource('/crews', 'Admin\CrewController', ['except' => ['update', 'destroy']]);
         Route::resource('/tags', 'Admin\TagController', ['only' => ['index', 'show']]);
-
     });
 
     //Sole SA
-    Route::group(['prefix' => 'superadmin', 'middleware' => ['hasRole:SA'], 'as' => 'superadmin.'], function(){
+    Route::group(['prefix' => 'superadmin', 'middleware' => ['hasRole:SA'], 'as' => 'superadmin.'], function () {
 
-        Route::group(['prefix' => 'system', 'as' => 'system.'], function(){
+        Route::group(['prefix' => 'system', 'as' => 'system.'], function () {
             Route::resource('/privileges', 'Superadmin\System\PrivilegeController', ['only' => ['index', 'show']]);
             Route::get('/passport', function () {
                 return view('superadmin.system.passport');
@@ -39,10 +43,5 @@ Route::group(['middleware' => 'auth'], function(){
                 return view('superadmin.system.setting');
             })->name('setting');
         });
-
     });
-
 });
-
-
-

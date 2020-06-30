@@ -47,6 +47,9 @@ Route::group(['middleware' => 'auth:api', 'as' => 'api.'], function(){
         Route::resource('users', 'Api\Admin\UserController');
         Route::resource('genres', 'Api\Admin\GenreController', ['except' => ['create', 'edit']]);
 
+        //Roles
+        Route::get('roles/options', 'Api\Admin\RoleController@selectOptions')->name('roles.options');
+
         //Articles
         Route::get('articles/options/status', 'Api\Admin\ArticleController@statusOptions')->name('products.options.status');
         Route::get('articles/options/author', 'Api\Admin\ArticleController@authorOptions')->name('products.options.author');

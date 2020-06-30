@@ -237,20 +237,7 @@ __webpack_require__.r(__webpack_exports__);
       author_options: [],
       tag_options: [],
       status_options: [],
-      articles: {},
-      columns: [{
-        name: "Title",
-        field: "title"
-      }, {
-        name: "Last Update",
-        field: "updated_at"
-      }, {
-        name: "Status",
-        field: "status"
-      }, {
-        name: "Action",
-        align: "center"
-      }]
+      articles: {}
     };
   },
   computed: {
@@ -700,7 +687,7 @@ var render = function() {
             { staticClass: "text-capitalize" },
             _vm._l(_vm.articles, function(item, index) {
               return _c("tr", { key: index }, [
-                _c("td", [_vm._v(_vm._s(index + 1))]),
+                _c("td", [_vm._v(_vm._s(index + _vm.meta.from))]),
                 _vm._v(" "),
                 _c("td", [
                   _c("a", { attrs: { href: "/admin/articles/" + item.id } }, [

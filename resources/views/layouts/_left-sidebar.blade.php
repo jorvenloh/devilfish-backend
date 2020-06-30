@@ -96,7 +96,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item has-treeview">
+                <li class="nav-item has-treeview {{ (request()->is('admin/users*')) ? 'menu-open' : '' }}">
                     <a href="#" class="nav-link {{ (request()->is('admin/users*')) ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
@@ -106,25 +106,25 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a href="/users?role=admin" class="nav-link">
+                            <a href="/admin/users" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>All</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/users?role=admin" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Administrators</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/users?role=user" class="nav-link">
+                            <a href="/admin/users?role=user" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Subscribers</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="/users?role=registered" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Registered</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/users?role=follower" class="nav-link">
+                            <a href="/admin/newsletters/followers" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Followers</p>
                             </a>

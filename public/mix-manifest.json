@@ -4,5 +4,11 @@
     "/article-create.js": "/article-create.js",
     "/articles-index.js": "/articles-index.js",
     "/articles-show.js": "/articles-show.js",
-    "/vendors~article-create~articles-show.js": "/vendors~article-create~articles-show.js"
+    "/dashboard.js": "/dashboard.js",
+    "/passport-authorized-clients.js": "/passport-authorized-clients.js",
+    "/passport-clients.js": "/passport-clients.js",
+    "/passport-personal-access-token.js": "/passport-personal-access-token.js",
+    "/vendors~article-create~articles-show.js": "/vendors~article-create~articles-show.js",
+    "/user-show.js": "/user-show.js",
+    "/users-index.js": "/users-index.js"
 }

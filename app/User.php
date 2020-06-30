@@ -9,6 +9,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\UserTrait;
 use App\Filters\UserFilter;
+use App\Enumerations\Image\Type as ImageType;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -70,6 +71,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function articles()
     {
         return $this->hasMany('App\Article', 'user_id');
+    }
+
+    public function avatar()
+    {
+        return $this->morphMany('App\Image', 'imageable')->where('type', ImageType::AVATAR)->latest()->first();
     }
 
 }

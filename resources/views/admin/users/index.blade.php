@@ -1,25 +1,25 @@
 @extends('layouts.app')
 
-@section('title', config('app.name')." | Dashboard")
+@section('title', config('app.name')." | Users")
 
 @section('breadcrumb')
 <section class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
-            <div class="col-sm-12">
-                <h1>Dashboard</h1>
+            <div class="col-sm-6">
+                <h1>Users</h1>
             </div>
         </div>
-    </div><!-- /.container-fluid -->
+    </div>
 </section>
 @endsection
 
 @section('content')
-
-<div class="px-3">
-
-    <dashboard></dashboard>
-
+<div class="container">
+    <users-index role="{{$role}}"></users-index>
 </div>
+@endsection
+
+@section('script')
 
 @endsection

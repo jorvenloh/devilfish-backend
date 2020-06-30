@@ -1,19 +1,4 @@
 Vue.component(
-    'passport-clients',
-    require('./components/superadmin/passport/Clients.vue').default
-);
-
-Vue.component(
-    'passport-authorized-clients',
-    require('./components/superadmin/passport/AuthorizedClients.vue').default
-);
-
-Vue.component(
-    'passport-personal-access-tokens',
-    require('./components/superadmin/passport/PersonalAccessTokens.vue').default
-);
-
-Vue.component(
     'v-datatable',
     require('./components/vDatatable.vue').default
 );
@@ -41,6 +26,11 @@ Vue.component(
 Vue.component(
     'v-image-selector',
     require('./components/vImageSelector.vue').default
+);
+
+Vue.component(
+    'v-notification-dropdown',
+    require('./components/vNotificationDropdown.vue').default
 );
 
 Vue.component(
@@ -106,9 +96,4 @@ Vue.component(
 Vue.component(
     'tags-show',
     require('./components/admin/tags/show.vue').default
-);
-
-Vue.component(
-    'dashboard-index',
-    require('./components/admin/dashboard/index.vue').default
 );

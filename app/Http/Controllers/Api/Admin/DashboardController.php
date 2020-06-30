@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
+use App\Product;
+use App\Article;
 use Illuminate\Database\Eloquent\Builder;
 
 class DashboardController extends Controller
@@ -13,28 +15,30 @@ class DashboardController extends Controller
     //
     public function usersData(Request $request)
     {
-        $users = User::all();
-
         $counted = Role::withCount([
-            'users as superadmin' => function (Builder $query) {
-                $query->where('code', 'SA');
-            },
-            'users as admin' => function (Builder $query) {
-                $query->where('code', 'AD');
-            },
-            'users as subscriber' => function (Builder $query) {
-                $query->where('code', 'US');
-            }
+            'users'
         ])->get();
 
-        return response()->json(['user' => $counted], 200);
+        return response()->json(['roles' => $counted], 200);
     }
 
     public function productsData()
     {
+        $counted = Product::groupBy('status')
+            ->select('status')
+            ->selectRaw('count(*) as status_count')
+            ->get();
+
+        return response()->json(['products' => $counted], 200);
     }
 
     public function articlesData()
     {
+        $counted = Article::groupBy('status')
+            ->select('status')
+            ->selectRaw('count(*) as status_count')
+            ->get();
+
+        return response()->json(['articles' => $counted], 200);
     }
 }

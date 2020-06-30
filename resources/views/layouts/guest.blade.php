@@ -34,6 +34,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-white" href="#">Join Us</a>
                         </li>
+                        @yield('username')
                     </ul>
                 </div>
             </div>

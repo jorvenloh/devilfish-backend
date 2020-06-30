@@ -143,7 +143,7 @@
                     </thead>
                     <tbody class="text-capitalize">
                         <tr :key="index" v-for="(item, index) in articles">
-                            <td>{{index + 1}}</td>
+                            <td>{{index + meta.from}}</td>
                             <td>
                                 <a
                                     :href="`/admin/articles/${item.id}`"
@@ -228,24 +228,6 @@ export default {
             tag_options: [],
             status_options: [],
             articles: {},
-            columns: [
-                {
-                    name: "Title",
-                    field: "title"
-                },
-                {
-                    name: "Last Update",
-                    field: "updated_at"
-                },
-                {
-                    name: "Status",
-                    field: "status"
-                },
-                {
-                    name: "Action",
-                    align: "center"
-                }
-            ]
         };
     },
     computed: {

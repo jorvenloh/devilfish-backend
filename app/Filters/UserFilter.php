@@ -16,8 +16,19 @@ trait UserFilter
             ->where(function ($query) use ($filter) {
                 if ($filter->has('username_or_email')) {
                     $query
-                    ->where('username', 'like', '%' . $filter->get('username_or_email') . '%')
-                    ->orWhere('email', 'like', '%' . $filter->get('username_or_email') . '%');
+                        ->where('username', 'like', '%' . $filter->get('username_or_email') . '%')
+                        ->orWhere('email', 'like', '%' . $filter->get('username_or_email') . '%');
+                }
+            })
+            ->where(function ($query) use ($filter) {
+                if ($filter->has('role')) {
+                    if (is_null($filter->get('role')))
+                        return null;
+
+                    if ($filter->get('role'))
+                        $query->whereHas('roles', function (Builder $query) use ($filter) {
+                            $query->where('name', $filter->get('role'));
+                        })->get();
                 }
             });
     }
@@ -37,5 +48,4 @@ trait UserFilter
                 }
             });
     }
-
 }
