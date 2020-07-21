@@ -28,6 +28,10 @@ Route::group(['middleware' => 'api', 'as' => 'api.'], function () {
     });
 
     //guest
+    Route::resource('products', 'Api\ProductController', ['only' => ['index', 'show']]);
+    Route::resource('articles', 'Api\ArticleController', ['only' => ['index', 'show']]);
+
+    Route::resource('genres', 'Api\GenreController', ['only' => ['index']]);
     Route::resource('genres', 'Api\GenreController', ['only' => ['index']]);
     Route::resource('tags', 'Api\TagController', ['only' => ['index']]);
 
