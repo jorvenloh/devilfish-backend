@@ -44,7 +44,7 @@ export default {
             if (search.length >= this.searching_threshold) {
                 loading(true);
                 axios
-                    .get(`tags`, { params: { name: search } })
+                    .get(`api/tags`, { params: { name: search } })
                     .then(response => {
                         this.options = response.data;
                     })

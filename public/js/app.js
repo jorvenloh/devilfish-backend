@@ -5038,7 +5038,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (search.length >= this.tag_searching_threshold) {
         loading(true);
-        axios.get("tags", {
+        axios.get("api/tags", {
           params: {
             name: search
           }
@@ -5066,7 +5066,7 @@ __webpack_require__.r(__webpack_exports__);
           data.append("tags[]", value);
         });
 
-        axios.post("admin/crews", data).then(function (response) {
+        axios.post("api/admin/crews", data).then(function (response) {
           _this2.alertSuccess();
 
           _this2.clearForm();
@@ -5291,7 +5291,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      axios.get("admin/crews", {
+      axios.get("api/admin/crews", {
         params: {
           page: this.page,
           filters: this.filters,
@@ -5325,7 +5325,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (search.length >= this.product_searching_threshold) {
         loading(true);
-        axios.get("admin/products/options", {
+        axios.get("api/admin/products/options", {
           params: {
             title: search
           }
@@ -5518,7 +5518,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       this.loading = true;
-      axios.get("admin/crews/".concat(this.crew_id)).then(function (response) {
+      axios.get("api/admin/crews/".concat(this.crew_id)).then(function (response) {
         _this.reconstructItems(response.data.data);
       })["catch"](function (error) {
         _this.alertError();
@@ -5581,7 +5581,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this3 = this;
 
       this.loading = true;
-      axios.patch("admin/crews/".concat(this.crew_id), patchPayload).then(function (response) {
+      axios.patch("api/admin/crews/".concat(this.crew_id), patchPayload).then(function (response) {
         _this3.reconstructItems(response.data);
 
         _this3.alertSuccess();
@@ -5597,7 +5597,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this4 = this;
 
       this.loading = true;
-      axios["delete"]("admin/crews/".concat(this.crew_id)).then(function (response) {
+      axios["delete"]("api/admin/crews/".concat(this.crew_id)).then(function (response) {
         _this4.alertSuccess();
 
         window.location.href = "http://devilfish.local" + "/admin/crews";
@@ -5621,7 +5621,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this5 = this;
 
       this.loading_tags = true;
-      axios.post("admin/crews/".concat(this.crew_id, "/tags"), payload).then(function (response) {
+      axios.post("api/admin/crews/".concat(this.crew_id, "/tags"), payload).then(function (response) {
         _this5.tags = response.data;
 
         _this5.alertSuccess();
@@ -5732,7 +5732,7 @@ __webpack_require__.r(__webpack_exports__);
       this.confirm(function () {
         _this.loading = true;
         _this.errors = [];
-        axios.post("admin/products", _this.form).then(function (response) {
+        axios.post("api/admin/products", _this.form).then(function (response) {
           _this.alertSuccess();
 
           _this.navigateToProductShow(response.data.product.id);
@@ -5920,7 +5920,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       this.loading = true;
-      axios.get("admin/products/".concat(this.product_id, "/crews")).then(function (response) {
+      axios.get("api/admin/products/".concat(this.product_id, "/crews")).then(function (response) {
         _this.crews = response.data.data;
       })["catch"](function (error) {
         _this.alertError();
@@ -5931,7 +5931,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getRoleOptions: function getRoleOptions() {
       var _this2 = this;
 
-      axios.get("admin/products/".concat(this.product_id, "/crews/roles")).then(function (response) {
+      axios.get("api/admin/products/".concat(this.product_id, "/crews/roles")).then(function (response) {
         _this2.role_options = response.data;
       });
     },
@@ -5939,7 +5939,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this3 = this;
 
       this.loading = true;
-      axios.patch("admin/products/".concat(this.product_id, "/crews/").concat(crew_id), payload).then(function (response) {
+      axios.patch("api/admin/products/".concat(this.product_id, "/crews/").concat(crew_id), payload).then(function (response) {
         _this3.alertSuccess();
 
         _this3.getCrews();
@@ -6001,7 +6001,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       this.loading = true;
       this.confirm(function () {
-        axios["delete"]("admin/products/".concat(_this5.product_id, "/crews/").concat(crew_id)).then(function (response) {
+        axios["delete"]("api/admin/products/".concat(_this5.product_id, "/crews/").concat(crew_id)).then(function (response) {
           _this5.alertSuccess();
 
           _this5.crews = response.data.crews;
@@ -6023,7 +6023,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       this.loading = true;
       this.form.crew = this.$refs.crewInput.selected_crew;
-      axios.post("admin/products/".concat(this.product_id, "/crews"), this.form).then(function (response) {
+      axios.post("api/admin/products/".concat(this.product_id, "/crews"), this.form).then(function (response) {
         _this6.alertSuccess();
 
         _this6.getCrews();
@@ -6235,7 +6235,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      axios.get("admin/products/".concat(this.product_id, "/images")).then(function (response) {
+      axios.get("api/admin/products/".concat(this.product_id, "/images")).then(function (response) {
         _this.images = response.data.data;
       })["catch"](function (error) {
         _this.alertError();
@@ -6246,7 +6246,7 @@ __webpack_require__.r(__webpack_exports__);
     getOptions: function getOptions() {
       var _this2 = this;
 
-      axios.get("admin/products/".concat(this.product_id, "/images/create")).then(function (response) {
+      axios.get("api/admin/products/".concat(this.product_id, "/images/create")).then(function (response) {
         _this2.type_options = response.data.options;
       })["catch"](function (error) {
         _this2.alertError();
@@ -6259,7 +6259,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loading = true;
       this.confirm(function () {
-        axios["delete"]("admin/products/".concat(_this3.product_id, "/images/").concat(image_id)).then(function (response) {
+        axios["delete"]("api/admin/products/".concat(_this3.product_id, "/images/").concat(image_id)).then(function (response) {
           _this3.alertSuccess();
 
           _this3.getImages();
@@ -6284,7 +6284,7 @@ __webpack_require__.r(__webpack_exports__);
         var data = new FormData();
         data.append("type", _this4.form.type);
         data.append("image", _this4.form.file);
-        axios.post("admin/products/".concat(_this4.product_id, "/images"), data).then(function (response) {
+        axios.post("api/admin/products/".concat(_this4.product_id, "/images"), data).then(function (response) {
           _this4.alertSuccess();
 
           _this4.getImages();
@@ -6557,7 +6557,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      axios.get("admin/products", {
+      axios.get("api/admin/products", {
         params: {
           page: this.page,
           filters: this.filters,
@@ -6575,10 +6575,10 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     showProduct: function showProduct(product_id) {
-      window.location.href = "http://devilfish.local" + "/admin/products/".concat(product_id);
+      window.location.href = "http://devilfish.local" + "api//admin/products/".concat(product_id);
     },
     createProduct: function createProduct() {
-      window.location.href = "http://devilfish.local" + "/admin/products/create";
+      window.location.href = "http://devilfish.local" + "api//admin/products/create";
     },
     goToPage: function goToPage(pageNumber) {
       if (pageNumber) {
@@ -6591,7 +6591,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (search.length >= this.crew_searching_threshold) {
         loading(true);
-        axios.get("admin/crews/options", {
+        axios.get("api/admin/crews/options", {
           params: {
             name: search
           }
@@ -6609,7 +6609,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (search.length >= this.tag_searching_threshold) {
         loading(true);
-        axios.get("admin/tags/options", {
+        axios.get("api/admin/tags/options", {
           params: {
             name: search
           }
@@ -6905,7 +6905,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       this.loading = true;
-      axios.get("admin/products/".concat(this.product_id)).then(function (response) {
+      axios.get("api/admin/products/".concat(this.product_id)).then(function (response) {
         _this.reconstructItems(response.data);
       })["catch"](function (error) {
         _this.alertError();
@@ -6932,7 +6932,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _this2.loading = true;
                 return _context.abrupt("return", new Promise(function (resolve, reject) {
                   _this2.confirm(function () {
-                    axios.patch("admin/products/".concat(_this2.product_id), payload).then(function (response) {
+                    axios.patch("api/admin/products/".concat(_this2.product_id), payload).then(function (response) {
                       _this2.alertSuccess();
 
                       _this2.product = response.data;
@@ -7012,7 +7012,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this5 = this;
 
       this.loading = true;
-      axios["delete"]("admin/products/".concat(this.product_id)).then(function (response) {
+      axios["delete"]("api/admin/products/".concat(this.product_id)).then(function (response) {
         _this5.alertSuccess();
 
         _this5.navigateToProductIndex();
@@ -7029,7 +7029,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this6 = this;
 
       this.loading_tags = true;
-      axios.post("admin/products/".concat(this.product_id, "/tags"), payload).then(function (response) {
+      axios.post("api/admin/products/".concat(this.product_id, "/tags"), payload).then(function (response) {
         _this6.tags = response.data;
 
         _this6.alertSuccess();
@@ -7063,7 +7063,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         data.append("type", 'poster');
       }
 
-      axios.post("admin/products/".concat(this.product_id, "/images"), data).then(function (response) {
+      axios.post("api/admin/products/".concat(this.product_id, "/images"), data).then(function (response) {
         _this7.product.poster = response.data.image;
 
         _this7.$refs.imageSelector.uploadSuccess();
@@ -7252,7 +7252,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      axios.get("admin/tags", {
+      axios.get("api/admin/tags", {
         params: {
           page: this.page,
           filters: this.filters,
@@ -7457,7 +7457,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       this.loading = true;
-      axios.get("admin/genres", {
+      axios.get("api/admin/genres", {
         params: this.filters
       }).then(function (response) {
         var _response$data = response.data,
@@ -7499,7 +7499,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 newGenreTitle = _yield$_this2$$swal$f.value;
 
                 if (newGenreTitle) {
-                  axios.post("admin/genres", {
+                  axios.post("api/admin/genres", {
                     name: newGenreTitle
                   }).then(function (response) {
                     //append new to index
@@ -7550,7 +7550,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 editedGenreTitle = _yield$_this3$$swal$f.value;
 
                 if (editedGenreTitle) {
-                  axios.patch("admin/genres/".concat(_this3.genre.id), {
+                  axios.patch("api/admin/genres/".concat(_this3.genre.id), {
                     name: editedGenreTitle.trim().toLowerCase()
                   }).then(function (response) {
                     var edited_genre = response.data.genre;
@@ -7587,7 +7587,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       if (this.genre.id) {
         this.loading = true;
         this.confirm(function () {
-          axios["delete"]("admin/genres/".concat(_this4.genre.id)).then(function (response) {
+          axios["delete"]("api/admin/genres/".concat(_this4.genre.id)).then(function (response) {
             _this4.alertSuccess();
 
             _this4.getGenres();
@@ -7693,7 +7693,7 @@ __webpack_require__.r(__webpack_exports__);
     getPrivileges: function getPrivileges() {
       var _this = this;
 
-      axios.get("superadmin/privileges", {
+      axios.get("api/superadmin/privileges", {
         params: this.filters
       }).then(function (response) {
         _this.privileges.data = response.data.data;
@@ -7860,7 +7860,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      axios.get("superadmin/privileges/".concat(this.privilege_id, "/roles"), {
+      axios.get("api/superadmin/privileges/".concat(this.privilege_id, "/roles"), {
         params: this.filters
       }).then(function (response) {
         _this.roles.data = response.data.data;
@@ -7878,7 +7878,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loading = true;
       this.confirm(function () {
-        axios.post("superadmin/privileges/".concat(_this2.privilege_id, "/roles"), {
+        axios.post("api/superadmin/privileges/".concat(_this2.privilege_id, "/roles"), {
           roles: _this2.checkedRoles
         }).then(function (response) {
           _this2.$emit("updated-assignation");
@@ -8015,7 +8015,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      axios.get("superadmin/privileges/".concat(this.privilege_id, "/roles")).then(function (response) {
+      axios.get("api/superadmin/privileges/".concat(this.privilege_id, "/roles")).then(function (response) {
         _this.roles.data = response.data.data;
         _this.roles.pagination.links = response.data.links;
         _this.roles.pagination.meta = response.data.meta;
@@ -8029,7 +8029,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.confirm(function () {
-        axios["delete"]("superadmin/privileges/".concat(_this2.privilege_id, "/roles/").concat(role_id)).then(function (response) {
+        axios["delete"]("api/superadmin/privileges/".concat(_this2.privilege_id, "/roles/").concat(role_id)).then(function (response) {
           _this2.getRelatedRoles();
 
           _this2.$refs.assignRole.getUnattachedRoles();
@@ -8136,7 +8136,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      axios.get("superadmin/privileges/".concat(this.privilege_id)).then(function (response) {
+      axios.get("api/superadmin/privileges/".concat(this.privilege_id)).then(function (response) {
         _this.privilege = response.data.data;
       })["catch"](function (error) {
         console.log(error);
@@ -8150,7 +8150,7 @@ __webpack_require__.r(__webpack_exports__);
       var warning_message = this.privilege.enabled ? 'Disabling this privilege will affect all holders' : 'Enable this privilege for all holders';
       this.confirm(function () {
         _this2.confirmWithPassword(function (password) {
-          axios.patch("superadmin/privileges/".concat(_this2.privilege_id), {
+          axios.patch("api/superadmin/privileges/".concat(_this2.privilege_id), {
             enabled: !_this2.privilege.enabled,
             password: password
           }).then(function (response) {
@@ -8319,7 +8319,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      axios.get("superadmin/privileges/".concat(this.privilege_id, "/users"), {
+      axios.get("api/superadmin/privileges/".concat(this.privilege_id, "/users"), {
         params: this.filters
       }).then(function (response) {
         _this.users.data = response.data.data;
@@ -8337,7 +8337,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loading = true;
       this.confirm(function () {
-        axios.post("superadmin/privileges/".concat(_this2.privilege_id, "/users"), {
+        axios.post("api/superadmin/privileges/".concat(_this2.privilege_id, "/users"), {
           users: _this2.checkedUsers
         }).then(function (response) {
           _this2.$emit("updated-assignation");
@@ -8474,7 +8474,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      axios.get("superadmin/privileges/".concat(this.privilege_id, "/users")).then(function (response) {
+      axios.get("api/superadmin/privileges/".concat(this.privilege_id, "/users")).then(function (response) {
         _this.users.data = response.data.data;
         _this.users.pagination.links = response.data.links;
         _this.users.pagination.meta = response.data.meta;
@@ -8488,7 +8488,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this2 = this;
 
       this.confirm(function () {
-        axios["delete"]("superadmin/privileges/".concat(_this2.privilege_id, "/users/").concat(user_id)).then(function (response) {
+        axios["delete"]("api/superadmin/privileges/".concat(_this2.privilege_id, "/users/").concat(user_id)).then(function (response) {
           console.log('ok');
 
           _this2.getRelatedUsers();
@@ -8551,7 +8551,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (search.length >= this.crew_searching_threshold) {
         loading(true);
-        axios.get("admin/crews/options", {
+        axios.get("api/admin/crews/options", {
           params: {
             name: search
           }
@@ -9407,7 +9407,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (search.length >= this.searching_threshold) {
         loading(true);
-        axios.get("tags", {
+        axios.get("api/tags", {
           params: {
             name: search
           }
@@ -14260,7 +14260,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.card-crew[data-v-ec1ee08c] {\r\n    max-width: 144px;\r\n    margin-right: 1rem;\n}\n.no-avatar[data-v-ec1ee08c] {\r\n    height: 180px !important;\r\n    width: 144px !important;\n}\n.no-avatar[data-v-ec1ee08c]::after {\r\n    content: \"No avatar\";\r\n    background-color: grey;\r\n    color: white;\r\n    height: 100%;\r\n    display: block;\r\n    text-align: center;\n}\n.crew-name[data-v-ec1ee08c] {\r\n    white-space: nowrap;\r\n    text-overflow: hidden;\n}\n.card-body[data-v-ec1ee08c] {\r\n    text-overflow: ellipsis;\r\n    overflow: hidden;\n}\r\n", ""]);
+exports.push([module.i, "\n.card-crew[data-v-ec1ee08c] {\n    max-width: 144px;\n    margin-right: 1rem;\n}\n.no-avatar[data-v-ec1ee08c] {\n    height: 180px !important;\n    width: 144px !important;\n}\n.no-avatar[data-v-ec1ee08c]::after {\n    content: \"No avatar\";\n    background-color: grey;\n    color: white;\n    height: 100%;\n    display: block;\n    text-align: center;\n}\n.crew-name[data-v-ec1ee08c] {\n    white-space: nowrap;\n    text-overflow: hidden;\n}\n.card-body[data-v-ec1ee08c] {\n    text-overflow: ellipsis;\n    overflow: hidden;\n}\n", ""]);
 
 // exports
 
@@ -89966,7 +89966,7 @@ try {
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-window.axios.defaults.baseURL = "http://devilfish.local/api";
+window.axios.defaults.baseURL = "http://devilfish.local";
 
 window.axios.defaults.paramsSerializer = function (params) {
   return qs.stringify(params, {

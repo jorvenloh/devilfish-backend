@@ -181,7 +181,7 @@ export default {
         getCrews() {
             this.loading = true;
             axios
-                .get("admin/crews", {
+                .get("api/admin/crews", {
                     params: {
                         page: this.page,
                         filters: this.filters,
@@ -219,7 +219,7 @@ export default {
             if (search.length >= this.product_searching_threshold) {
                 loading(true);
                 axios
-                    .get(`admin/products/options`, {
+                    .get(`api/admin/products/options`, {
                         params: { title: search }
                     })
                     .then(response => {

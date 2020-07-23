@@ -64,7 +64,7 @@ export default {
                 this.loading = true;
                 this.errors = [];
                 axios
-                    .post(`admin/products`, this.form)
+                    .post(`api/admin/products`, this.form)
                     .then(response => {
                         this.alertSuccess();
                         this.navigateToProductShow(response.data.product.id);

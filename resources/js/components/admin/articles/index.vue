@@ -259,7 +259,7 @@ export default {
         getArticles() {
             this.loading = true;
             axios
-                .get(`admin/articles`, {
+                .get(`api/admin/articles`, {
                     params: {
                         page: this.page,
                         filters: this.filters,
@@ -281,14 +281,14 @@ export default {
         },
         getStatusOptions() {
             axios
-                .get(`admin/articles/options/status`)
+                .get(`api/admin/articles/options/status`)
                 .then(response => {
                     this.status_options = response.data;
                 });
         },
         getAuthorOptions() {
             axios
-                .get(`admin/articles/options/author`)
+                .get(`api/admin/articles/options/author`)
                 .then(response => {
                     this.author_options = response.data;
                 });
@@ -311,7 +311,7 @@ export default {
             if (search.length >= this.searching_threshold) {
                 loading(true);
                 axios
-                    .get(`admin/tags/options`, {
+                    .get(`api/admin/tags/options`, {
                         params: { name: search }
                     })
                     .then(response => {

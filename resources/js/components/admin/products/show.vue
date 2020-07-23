@@ -242,7 +242,7 @@ export default {
         getProduct() {
             this.loading = true;
             axios
-                .get(`admin/products/${this.product_id}`)
+                .get(`api/admin/products/${this.product_id}`)
                 .then(response => {
                     this.reconstructItems(response.data);
                 })
@@ -264,7 +264,7 @@ export default {
             return new Promise((resolve, reject) => {
                 this.confirm(() => {
                     axios
-                        .patch(`admin/products/${this.product_id}`, payload)
+                        .patch(`api/admin/products/${this.product_id}`, payload)
                         .then(response => {
                             this.alertSuccess();
                             this.product = response.data;
@@ -308,7 +308,7 @@ export default {
         deleteProduct() {
             this.loading = true;
             axios
-                .delete(`admin/products/${this.product_id}`)
+                .delete(`api/admin/products/${this.product_id}`)
                 .then(response => {
                     this.alertSuccess();
                     this.navigateToProductIndex();
@@ -326,7 +326,7 @@ export default {
         postTags(payload) {
             this.loading_tags = true;
             axios
-                .post(`admin/products/${this.product_id}/tags`, payload)
+                .post(`api/admin/products/${this.product_id}/tags`, payload)
                 .then(response => {
                     this.tags = response.data;
                     this.alertSuccess();
@@ -354,7 +354,7 @@ export default {
                 data.append("type", 'poster');
             }
             axios
-                .post(`admin/products/${this.product_id}/images`, data)
+                .post(`api/admin/products/${this.product_id}/images`, data)
                 .then(response => {
                     this.product.poster = response.data.image;
                     this.$refs.imageSelector.uploadSuccess();

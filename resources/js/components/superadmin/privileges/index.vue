@@ -84,7 +84,7 @@ export default {
     methods: {
         getPrivileges() {
             axios
-                .get("superadmin/privileges", {params: this.filters})
+                .get("api/superadmin/privileges", {params: this.filters})
                 .then(response => {
                     this.privileges.data = response.data.data;
                     this.privileges.pagination.links = response.data.links;

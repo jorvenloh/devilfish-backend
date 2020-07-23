@@ -105,7 +105,7 @@ export default {
         getUser() {
             this.loading = true;
             axios
-                .get(`admin/users/${this.userId}`)
+                .get(`api/admin/users/${this.userId}`)
                 .then(response => {
                     this.reconstructItems(response.data.data);
                 })

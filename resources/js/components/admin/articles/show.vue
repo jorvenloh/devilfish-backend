@@ -100,7 +100,7 @@ export default {
         async getArticle() {
             this.loading = true;
             axios
-                .get(`admin/articles/${this.articleId}`)
+                .get(`api/admin/articles/${this.articleId}`)
                 .then(response => {
                     this.article = response.data.data;
                     this.setupEditor();

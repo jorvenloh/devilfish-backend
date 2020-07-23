@@ -101,7 +101,7 @@ export default {
         getRelatedUsers() {
             this.loading = true;
             axios
-                .get(`superadmin/privileges/${this.privilege_id}/users`)
+                .get(`api/superadmin/privileges/${this.privilege_id}/users`)
                 .then(response => {
                     this.users.data = response.data.data;
                     this.users.pagination.links = response.data.links;
@@ -118,7 +118,7 @@ export default {
             this.confirm(() => {
                 axios
                     .delete(
-                        `superadmin/privileges/${this.privilege_id}/users/${user_id}`
+                        `api/superadmin/privileges/${this.privilege_id}/users/${user_id}`
                     )
                     .then(response => {
                         console.log('ok');

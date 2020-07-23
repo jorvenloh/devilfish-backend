@@ -281,7 +281,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      axios.get("admin/articles", {
+      axios.get("api/admin/articles", {
         params: {
           page: this.page,
           filters: this.filters,
@@ -301,14 +301,14 @@ __webpack_require__.r(__webpack_exports__);
     getStatusOptions: function getStatusOptions() {
       var _this2 = this;
 
-      axios.get("admin/articles/options/status").then(function (response) {
+      axios.get("api/admin/articles/options/status").then(function (response) {
         _this2.status_options = response.data;
       });
     },
     getAuthorOptions: function getAuthorOptions() {
       var _this3 = this;
 
-      axios.get("admin/articles/options/author").then(function (response) {
+      axios.get("api/admin/articles/options/author").then(function (response) {
         _this3.author_options = response.data;
       });
     },
@@ -330,7 +330,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (search.length >= this.searching_threshold) {
         loading(true);
-        axios.get("admin/tags/options", {
+        axios.get("api/admin/tags/options", {
           params: {
             name: search
           }

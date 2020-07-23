@@ -196,7 +196,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      axios.get("admin/users", {
+      axios.get("api/admin/users", {
         params: {
           page: this.page,
           filters: this.filters,

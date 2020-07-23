@@ -88,7 +88,7 @@ export default {
                     console.log(outputData);
                     this.confirm(() => {
                         axios
-                            .post(`admin/articles`, this.form)
+                            .post(`api/admin/articles`, this.form)
                             .then(response => {
                                 this.alertSuccess();
                                 this.clearForm();

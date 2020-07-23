@@ -103,7 +103,7 @@ export default {
         getRelatedRoles() {
             this.loading = true;
             axios
-                .get(`superadmin/privileges/${this.privilege_id}/roles`)
+                .get(`api/superadmin/privileges/${this.privilege_id}/roles`)
                 .then(response => {
                     this.roles.data = response.data.data;
                     this.roles.pagination.links = response.data.links;
@@ -120,7 +120,7 @@ export default {
             this.confirm(() => {
                 axios
                     .delete(
-                        `superadmin/privileges/${this.privilege_id}/roles/${role_id}`
+                        `api/superadmin/privileges/${this.privilege_id}/roles/${role_id}`
                     )
                     .then(response => {
                         this.getRelatedRoles();

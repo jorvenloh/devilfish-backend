@@ -181,7 +181,7 @@ export default {
         getUsers() {
             this.loading = true;
             axios
-                .get("admin/users", {
+                .get("api/admin/users", {
                     params: {
                         page: this.page,
                         filters: this.filters,

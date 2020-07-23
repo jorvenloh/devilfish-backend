@@ -177,7 +177,7 @@ export default {
         getImages() {
             this.loading = true;
             axios
-                .get(`admin/products/${this.product_id}/images`)
+                .get(`api/admin/products/${this.product_id}/images`)
                 .then(response => {
                     this.images = response.data.data;
                 })
@@ -190,7 +190,7 @@ export default {
         },
         getOptions() {
             axios
-                .get(`admin/products/${this.product_id}/images/create`)
+                .get(`api/admin/products/${this.product_id}/images/create`)
                 .then(response => {
                     this.type_options = response.data.options;
                 })
@@ -207,7 +207,7 @@ export default {
                 () => {
                     axios
                         .delete(
-                            `admin/products/${this.product_id}/images/${image_id}`
+                            `api/admin/products/${this.product_id}/images/${image_id}`
                         )
                         .then(response => {
                             this.alertSuccess();
@@ -234,7 +234,7 @@ export default {
                 data.append("type", this.form.type);
                 data.append("image", this.form.file);
                 axios
-                    .post(`admin/products/${this.product_id}/images`, data)
+                    .post(`api/admin/products/${this.product_id}/images`, data)
                     .then(response => {
                         this.alertSuccess();
                         this.getImages();

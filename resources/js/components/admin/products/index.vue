@@ -216,7 +216,7 @@ export default {
         getProducts() {
             this.loading = true;
             axios
-                .get("admin/products", {
+                .get("api/admin/products", {
                     params: {
                         page: this.page,
                         filters: this.filters,
@@ -238,11 +238,11 @@ export default {
         },
         showProduct(product_id) {
             window.location.href =
-                process.env.MIX_APP_URL + `/admin/products/${product_id}`;
+                process.env.MIX_APP_URL + `api//admin/products/${product_id}`;
         },
         createProduct() {
             window.location.href =
-                process.env.MIX_APP_URL + `/admin/products/create`;
+                process.env.MIX_APP_URL + `api//admin/products/create`;
         },
         goToPage(pageNumber) {
             if (pageNumber) {
@@ -254,7 +254,7 @@ export default {
             if (search.length >= this.crew_searching_threshold) {
                 loading(true);
                 axios
-                    .get(`admin/crews/options`, {
+                    .get(`api/admin/crews/options`, {
                         params: { name: search }
                     })
                     .then(response => {
@@ -272,7 +272,7 @@ export default {
             if (search.length >= this.tag_searching_threshold) {
                 loading(true);
                 axios
-                    .get(`admin/tags/options`, {
+                    .get(`api/admin/tags/options`, {
                         params: { name: search }
                     })
                     .then(response => {

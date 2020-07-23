@@ -30,7 +30,7 @@ export default {
             if (search.length >= this.crew_searching_threshold) {
                 loading(true);
                 axios
-                    .get(`admin/crews/options`, {
+                    .get(`api/admin/crews/options`, {
                         params: { name: search }
                     })
                     .then(response => {

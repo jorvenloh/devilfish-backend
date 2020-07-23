@@ -33,7 +33,7 @@ window.axios = require('axios');
 
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
-window.axios.defaults.baseURL = process.env.MIX_APP_API_BASEURL;
+window.axios.defaults.baseURL = process.env.MIX_APP_URL;
 
 window.axios.defaults.paramsSerializer = function(params) {
     return qs.stringify(params, {arrayFormat: 'repeat'})

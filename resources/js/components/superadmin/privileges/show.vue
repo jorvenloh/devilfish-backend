@@ -79,7 +79,7 @@ export default {
         getPrivilege() {
             this.loading = true;
             axios
-                .get(`superadmin/privileges/${this.privilege_id}`)
+                .get(`api/superadmin/privileges/${this.privilege_id}`)
                 .then(response => {
                     this.privilege = response.data.data;
                 })
@@ -96,7 +96,7 @@ export default {
             this.confirm(() => {
                 this.confirmWithPassword(password => {
                     axios
-                        .patch(`superadmin/privileges/${this.privilege_id}`, {
+                        .patch(`api/superadmin/privileges/${this.privilege_id}`, {
                             enabled: !this.privilege.enabled,
                             password: password
                         })

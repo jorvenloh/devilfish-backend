@@ -143,7 +143,7 @@ export default {
         getTags() {
             this.loading = true;
             axios
-                .get(`admin/tags`, {
+                .get(`api/admin/tags`, {
                     params: {
                         page: this.page,
                         filters: this.filters,

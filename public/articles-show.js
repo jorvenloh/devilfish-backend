@@ -166,7 +166,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _this.loading = true;
-                axios.get("admin/articles/".concat(_this.articleId)).then(function (response) {
+                axios.get("api/admin/articles/".concat(_this.articleId)).then(function (response) {
                   _this.article = response.data.data;
 
                   _this.setupEditor();

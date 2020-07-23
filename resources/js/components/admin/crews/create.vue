@@ -157,7 +157,7 @@ export default {
             if (search.length >= this.tag_searching_threshold) {
                 loading(true);
                 axios
-                    .get(`tags`, { params: { name: search } })
+                    .get(`api/tags`, { params: { name: search } })
                     .then(response => {
                         this.tag_options = response.data;
                     })
@@ -184,7 +184,7 @@ export default {
                 });
 
                 axios
-                    .post(`admin/crews`, data)
+                    .post(`api/admin/crews`, data)
                     .then(response => {
                         this.alertSuccess();
                         this.clearForm();

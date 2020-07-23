@@ -97,7 +97,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(outputData);
 
         _this2.confirm(function () {
-          axios.post("admin/articles", _this2.form).then(function (response) {
+          axios.post("api/admin/articles", _this2.form).then(function (response) {
             _this2.alertSuccess();
 
             _this2.clearForm();

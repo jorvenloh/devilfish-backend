@@ -123,7 +123,7 @@ export default {
         getGenres() {
             this.loading = true;
             axios
-                .get(`admin/genres`, {
+                .get(`api/admin/genres`, {
                     params: this.filters
                 })
                 .then(response => {
@@ -155,7 +155,7 @@ export default {
 
             if (newGenreTitle) {
                 axios
-                    .post(`admin/genres`, { name: newGenreTitle })
+                    .post(`api/admin/genres`, { name: newGenreTitle })
                     .then(response => {
                         //append new to index
                         let new_genre = response.data.genre;
@@ -184,7 +184,7 @@ export default {
 
             if (editedGenreTitle) {
                 axios
-                    .patch(`admin/genres/${this.genre.id}`, {
+                    .patch(`api/admin/genres/${this.genre.id}`, {
                         name: editedGenreTitle.trim().toLowerCase()
                     })
                     .then(response => {
@@ -210,7 +210,7 @@ export default {
                 this.loading = true;
                 this.confirm(() => {
                     axios
-                        .delete(`admin/genres/${this.genre.id}`)
+                        .delete(`api/admin/genres/${this.genre.id}`)
                         .then(response => {
                             this.alertSuccess();
                             this.getGenres();

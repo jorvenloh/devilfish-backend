@@ -140,7 +140,7 @@ export default {
         getCrew() {
             this.loading = true;
             axios
-                .get(`admin/crews/${this.crew_id}`)
+                .get(`api/admin/crews/${this.crew_id}`)
                 .then(response => {
                     this.reconstructItems(response.data.data);
                 })
@@ -178,7 +178,7 @@ export default {
         patchCrew(patchPayload) {
             this.loading = true;
             axios
-                .patch(`admin/crews/${this.crew_id}`, patchPayload)
+                .patch(`api/admin/crews/${this.crew_id}`, patchPayload)
                 .then(response => {
                     this.reconstructItems(response.data);
                     this.alertSuccess();
@@ -195,7 +195,7 @@ export default {
         deleteCrew() {
             this.loading = true;
             axios
-                .delete(`admin/crews/${this.crew_id}`)
+                .delete(`api/admin/crews/${this.crew_id}`)
                 .then(response => {
                     this.alertSuccess();
                     window.location.href =
@@ -218,7 +218,7 @@ export default {
         postTags(payload) {
             this.loading_tags = true;
             axios
-                .post(`admin/crews/${this.crew_id}/tags`, payload)
+                .post(`api/admin/crews/${this.crew_id}/tags`, payload)
                 .then(response => {
                     this.tags = response.data;
                     this.alertSuccess();

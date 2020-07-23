@@ -141,7 +141,7 @@ export default {
         getCrews() {
             this.loading = true;
             axios
-                .get(`admin/products/${this.product_id}/crews`)
+                .get(`api/admin/products/${this.product_id}/crews`)
                 .then(response => {
                     this.crews = response.data.data;
                 })
@@ -154,7 +154,7 @@ export default {
         },
         getRoleOptions() {
             axios
-                .get(`admin/products/${this.product_id}/crews/roles`)
+                .get(`api/admin/products/${this.product_id}/crews/roles`)
                 .then(response => {
                     this.role_options = response.data;
                 });
@@ -163,7 +163,7 @@ export default {
             this.loading = true;
             axios
                 .patch(
-                    `admin/products/${this.product_id}/crews/${crew_id}`,
+                    `api/admin/products/${this.product_id}/crews/${crew_id}`,
                     payload
                 )
                 .then(response => {
@@ -202,7 +202,7 @@ export default {
                 () => {
                     axios
                         .delete(
-                            `admin/products/${this.product_id}/crews/${crew_id}`
+                            `api/admin/products/${this.product_id}/crews/${crew_id}`
                         )
                         .then(response => {
                             this.alertSuccess();
@@ -226,7 +226,7 @@ export default {
             this.loading = true;
             this.form.crew = this.$refs.crewInput.selected_crew;
             axios
-                .post(`admin/products/${this.product_id}/crews`, this.form)
+                .post(`api/admin/products/${this.product_id}/crews`, this.form)
                 .then(response => {
                     this.alertSuccess();
                     this.getCrews();

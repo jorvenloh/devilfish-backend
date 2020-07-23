@@ -121,7 +121,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       this.loading = true;
-      axios.get("admin/users/".concat(this.userId)).then(function (response) {
+      axios.get("api/admin/users/".concat(this.userId)).then(function (response) {
         _this.reconstructItems(response.data.data);
       })["catch"](function (error) {
         _this.alertError();

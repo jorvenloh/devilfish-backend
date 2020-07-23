@@ -144,7 +144,7 @@ export default {
         getUnattachedUsers() {
             this.loading = true;
             axios
-                .get(`superadmin/privileges/${this.privilege_id}/users`, {
+                .get(`api/superadmin/privileges/${this.privilege_id}/users`, {
                     params: this.filters
                 })
                 .then(response => {
@@ -164,7 +164,7 @@ export default {
             this.loading = true;
             this.confirm(() => {
                 axios
-                    .post(`superadmin/privileges/${this.privilege_id}/users`, {
+                    .post(`api/superadmin/privileges/${this.privilege_id}/users`, {
                         users: this.checkedUsers
                     })
                     .then(response => {

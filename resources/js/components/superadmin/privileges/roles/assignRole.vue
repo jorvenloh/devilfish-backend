@@ -143,7 +143,7 @@ export default {
         getUnattachedRoles() {
             this.loading = true;
             axios
-                .get(`superadmin/privileges/${this.privilege_id}/roles`, {
+                .get(`api/superadmin/privileges/${this.privilege_id}/roles`, {
                     params: this.filters,
                 })
                 .then(response => {
@@ -163,7 +163,7 @@ export default {
             this.loading = true;
             this.confirm(() => {
                 axios
-                    .post(`superadmin/privileges/${this.privilege_id}/roles`, {
+                    .post(`api/superadmin/privileges/${this.privilege_id}/roles`, {
                         roles: this.checkedRoles
                     })
                     .then(response => {
